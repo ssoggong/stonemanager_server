@@ -8,18 +8,19 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "schedule_scheduletag")
-public class ScheduleScheduleTag {
+@Table(name = "SUBJECT_STUDENT")
+public class SubjectStudent {
     @Id
     @GeneratedValue
-    @Column(name = "schedule_scheduletag_idx")
+    @Column(name = "subject_student_idx")
     private Long idx;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "schedule_idx")
-    private Schedule schedule;
+    @JoinColumn(name = "subject_idx")
+    private Subject subject;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "scheduletag_idx")
-    private ScheduleTag tag;
+    @JoinColumn(name = "student_idx")
+    private Student student;
+
 }
