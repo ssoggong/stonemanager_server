@@ -59,11 +59,14 @@ public class Subject {
 
     //== 빌더 ==//
     @Builder
-    public Subject(String name, String year, String semester, Department department, Set<UserSubject> userSubjectSet) {
+    public Subject(String name, String year, String semester, Professor professor, Department department,Set<SubjectStudent> subjectStudentSet, Set<UserSubject> userSubjectSet, Set<Project> projectSet) {
         this.name = name;
         this.year = year;
         this.semester = semester;
+        this.professor = professor;
         this.department = department;
+        this.subjectStudentSet = subjectStudentSet;
         this.userSubjectSet = userSubjectSet;
+        this.projectSet = projectSet;
     }
 }
