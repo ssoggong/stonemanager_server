@@ -7,15 +7,16 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@IdClass(UserScheduleId.class)
 public class UserSchedule {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "user_schedule_idx")
+    private Long idx;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_idx")
     private Schedule schedule;
