@@ -14,8 +14,8 @@ public class Checklist {
     private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_idx")
-    private Project project;
+    @JoinColumn(name = "task_idx")
+    private Task task;
 
     private String name;
     private Boolean state; // 타입 확인 필요(Enum)

@@ -15,8 +15,8 @@ public class Comment {
     private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_idx")
-    private Project project;
+    @JoinColumn(name = "task_idx")
+    private Task task;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
