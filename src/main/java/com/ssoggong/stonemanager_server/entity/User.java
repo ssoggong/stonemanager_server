@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -16,19 +18,19 @@ public class User {
     private Long idx;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserSubject> userSubjectList = new ArrayList<>();
+    private Set<UserSubject> userSubjectSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ProjectUser> projectUserList = new ArrayList<>();
+    private Set<ProjectUser> projectUserSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserTask> userTaskList = new ArrayList<>();
+    private Set<UserTask> userTaskSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserSchedule> userScheduleList = new ArrayList<>();
+    private Set<UserSchedule> userScheduleSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private Set<Comment> commentSet = new HashSet<>();
 
     private String id;
 
@@ -45,27 +47,27 @@ public class User {
 
     //== 연관관계 메서드 ==//
     public void setUserSubject(UserSubject userSubject){
-        userSubjectList.add(userSubject);
+        userSubjectSet.add(userSubject);
         userSubject.setUser(this);
     }
 
     public void setUserTask(UserTask userTask){
-        userTaskList.add(userTask);
+        userTaskSet.add(userTask);
         userTask.setUser(this);
     }
 
     public void setProjectUser(ProjectUser projectUser){
-        projectUserList.add(projectUser);
+        projectUserSet.add(projectUser);
         projectUser.setUser(this);
     }
 
     public void setUserSchedule(UserSchedule userSchedule){
-        userScheduleList.add(userSchedule);
+        userScheduleSet.add(userSchedule);
         userSchedule.setUser(this);
     }
 
     public void setComment(Comment comment){
-        commentList.add(comment);
+        commentSet.add(comment);
         comment.setUser(this);
     }
 }
