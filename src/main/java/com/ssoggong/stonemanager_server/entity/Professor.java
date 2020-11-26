@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "PROFESSOR")
 public class Professor {
@@ -17,13 +19,17 @@ public class Professor {
     @Column(name = "professor_idx")
     private Long idx;
 
-    @Column(name = "professor_name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(table = "DEPARTMENT", name = "department_idx")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_idx")
     private Department department;
 
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Subject> subjects = new HashSet<>();
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private Set<Subject> subjectSet = new HashSet<>();
+
+    public void setDepartment(Department department){
+        this.department = department;
+        department.getProfessorSet().add(this);
+    }
 }

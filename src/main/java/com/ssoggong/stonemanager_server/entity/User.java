@@ -46,27 +46,27 @@ public class User {
     private String department;
 
     //== 연관관계 메서드 ==//
-    public void setUserSubject(UserSubject userSubject){
+    public void addUserSubject(UserSubject userSubject){
         userSubjectSet.add(userSubject);
         userSubject.setUser(this);
     }
 
-    public void setUserTask(UserTask userTask){
+    public void addUserTask(UserTask userTask){
         userTaskSet.add(userTask);
         userTask.setUser(this);
     }
 
-    public void setProjectUser(ProjectUser projectUser){
+    public void addProjectUser(ProjectUser projectUser){
         projectUserSet.add(projectUser);
         projectUser.setUser(this);
     }
 
-    public void setUserSchedule(UserSchedule userSchedule){
+    public void addUserSchedule(UserSchedule userSchedule){
         userScheduleSet.add(userSchedule);
         userSchedule.setUser(this);
     }
 
-    public void setComment(Comment comment){
+    public void addComment(Comment comment){
         commentSet.add(comment);
         comment.setUser(this);
     }

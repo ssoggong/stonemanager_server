@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "TASK")
 public class Task {
@@ -18,35 +20,40 @@ public class Task {
     @Column(name = "task_idx")
     private Long idx;
 
-    @Column(name = "task_name")
     private String name;
 
-    @ManyToOne(targetEntity = Project.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_idx")
     private Project project;
 
-    @Column(name = "task_description")
     private String description;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<File> files = new HashSet<>();
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<CheckList> checkLists = new HashSet<>();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private Set<Checklist> checkLists = new HashSet<>();
 
-    @Column(name = "task_createTime")
     private LocalDateTime createTime;
 
-    @Column(name = "task_deadline")
     private LocalDateTime deadline;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private Set<UserTask> userTaskSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<TaskTag> tags = new HashSet<>();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private Set<TaskTaskTag> taskTaskTagSet = new HashSet<>();
 
+    public void addUserTask(UserTask userTask){
+        userTaskSet.add(userTask);
+        userTask.setTask(this);
+    }
+
+    public void addTaskTaskTag(TaskTaskTag taskTaskTag){
+        taskTaskTagSet.add(taskTaskTag);
+        taskTaskTag.setTask(this);
+    }
 }

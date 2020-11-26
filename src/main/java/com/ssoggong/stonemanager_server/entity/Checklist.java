@@ -19,4 +19,9 @@ public class Checklist {
 
     private String name;
     private Boolean state; // 타입 확인 필요(Enum)
+
+    public void setTask(Task task){
+        this.task = task;
+        task.getCheckLists().add(this);
+    }
 }

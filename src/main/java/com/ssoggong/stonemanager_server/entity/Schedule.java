@@ -35,12 +35,12 @@ public class Schedule {
     private String description;
 
     //== 연관관계 메서드 ==//
-    public void setUserSchedule(UserSchedule userSchedule){
+    public void addUserSchedule(UserSchedule userSchedule){
         userScheduleSet.add(userSchedule);
         userSchedule.setSchedule(this);
     }
 
-    public void setScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag) {
+    public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag) {
         scheduleScheduleTagSet.add(scheduleScheduleTag);
         scheduleScheduleTag.setSchedule(this);
     }

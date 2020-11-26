@@ -24,4 +24,9 @@ public class Comment {
 
     private String content;
     private LocalDateTime createdDate; // 타입 확인 필요
+
+    public void setTask(Task tast){
+        this.task = tast;
+        tast.getComments().add(this);
+    }
 }
