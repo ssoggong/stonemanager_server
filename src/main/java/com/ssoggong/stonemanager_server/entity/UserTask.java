@@ -7,8 +7,11 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@IdClass(UserTaskId.class)
 public class UserTask {
+
+    @Id @GeneratedValue
+    @Column(name = "user_task_idx")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
