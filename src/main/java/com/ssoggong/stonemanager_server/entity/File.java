@@ -14,8 +14,8 @@ public class File {
     private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "proejct_idx")
-    private Project project;
+    @JoinColumn(name = "task_idx")
+    private Task task;
 
     private String name;
 }
