@@ -46,8 +46,9 @@ public class Schedule {
     }
 
     @Builder
-    public Schedule(Project project, Set<ScheduleScheduleTag> scheduleScheduleTagSet, String name, LocalDateTime date, String description) {
+    public Schedule(Project project, Set<UserSchedule> userScheduleSet, Set<ScheduleScheduleTag> scheduleScheduleTagSet, String name, LocalDateTime date, String description) {
         this.project = project;
+        this.userScheduleSet = userScheduleSet;
         this.scheduleScheduleTagSet = scheduleScheduleTagSet;
         this.name = name;
         this.date = date;
