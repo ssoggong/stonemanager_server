@@ -6,7 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -17,14 +19,14 @@ public class Schedule {
     private Long idx;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private List<UserSchedule> userScheduleList = new ArrayList<>();
+    private Set<UserSchedule> userScheduleSet = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_idx")
     private Project project;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private List<ScheduleScheduleTag> scheduleScheduleTagList = new ArrayList<>();
+    private Set<ScheduleScheduleTag> scheduleScheduleTagSet = new HashSet<>();
 
     private String name;
 
@@ -34,12 +36,12 @@ public class Schedule {
 
     //== 연관관계 메서드 ==//
     public void setUserSchedule(UserSchedule userSchedule){
-        userScheduleList.add(userSchedule);
+        userScheduleSet.add(userSchedule);
         userSchedule.setSchedule(this);
     }
 
     public void setScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag) {
-        scheduleScheduleTagList.add(scheduleScheduleTag);
+        scheduleScheduleTagSet.add(scheduleScheduleTag);
         scheduleScheduleTag.setSchedule(this);
     }
 }

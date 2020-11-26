@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -16,54 +18,30 @@ public class Project {
     private Long idx;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<ProjectUser> projectUserList = new ArrayList<>();
+    private Set<ProjectUser> projectUserSet = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Comment> commentList = new ArrayList<>();
+    private Set<Task> taskSet = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<File> fileList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<CheckList> checkListList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> taskList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Schedule> scheduleList = new ArrayList<>();
+    private Set<Schedule> scheduleSet = new HashSet<>();
 
     private String projectName;
     private String teamName;
 
     //== 연관관계 메서드 ==//
     public void addProjectUser(ProjectUser projectUser) {
-        projectUserList.add(projectUser);
+        projectUserSet.add(projectUser);
         projectUser.setProject(this);
     }
 
-    public void addComment(Comment comment){
-        commentList.add(comment);
-        comment.setProject(this);
-    }
-
-    public void addFile(File file) {
-        fileList.add(file);
-        file.setProject(this);
-    }
-
-    public void addCheckList(CheckList checkList){
-        checkListList.add(checkList);
-        checkList.setProject(this);
-    }
-
     public void addTask(Task task){
-        taskList.add(task);
+        taskSet.add(task);
         task.setProject(this);
     }
 
     public void addSchedule(Schedule schedule){
-        scheduleList.add(schedule);
+        scheduleSet.add(schedule);
         schedule.setProject(this);
     }
 }
