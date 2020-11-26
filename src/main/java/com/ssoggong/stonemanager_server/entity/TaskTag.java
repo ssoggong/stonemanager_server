@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "TASKTAG")
 public class TaskTag {
@@ -17,12 +19,15 @@ public class TaskTag {
     @Column(name = "tasktag_idx")
     private Long idx;
 
-    @Column(name = "tasktag_name")
     private String name;
 
-    @Column(name = "tasktag_color")
     private Integer color;
 
-    @OneToMany(mappedBy = "tasktag", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Task> tasks = new HashSet<>();
+    @OneToMany(mappedBy = "tasktag", cascade = CascadeType.ALL)
+    private Set<TaskTaskTag> taskTaskTagSet = new HashSet<>();
+
+    public void addTaskTaskTag(TaskTaskTag taskTaskTag){
+        taskTaskTagSet.add(taskTaskTag);
+        taskTaskTag.setTaskTag(this);
+    }
 }

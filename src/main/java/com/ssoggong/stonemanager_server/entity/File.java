@@ -18,4 +18,9 @@ public class File {
     private Task task;
 
     private String name;
+
+    public void setTask(Task task){
+        this.task = task;
+        task.getFiles().add(this);
+    }
 }
