@@ -7,15 +7,16 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@IdClass(ProjectUserId.class)
 public class ProjectUser {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "project_user_id")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_idx")
     private Project project;
