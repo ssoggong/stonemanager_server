@@ -40,24 +40,15 @@ public class HomeController {
     public ResponseEntity<Message> readProjectList(@RequestHeader("userIndex") Long userId) {
 
         Message message = new Message();
-        User user = userService.findById(userId).orElse(null);
-
-        if(user == null) {
+        List<ReadProjectListDto> collect;
+        try{
+            collect = userService.ReadProjectList(userId);
+        }
+        catch (IllegalArgumentException i) {
             message.setStatus(StatusCode.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
-
-        Set<ProjectUser> projectUserSet = user.getProjectUserSet();
-        Set<Project> projectSet = new HashSet<>();
-        for(ProjectUser projectUser: projectUserSet) {
-            projectSet.add(projectUser.getProject());
-        }
-
-        //엔티티 -> DTO 변환
-        List<ReadProjectListDto> collect = projectSet.stream()
-                .map(p -> new ReadProjectListDto(p.getIdx(), p.getProjectName(), p.getSubject().getName(), 100))
-                .collect(Collectors.toList());
 
         message.setStatus(StatusCode.OK);
         message.setMessage(ResponseMessage.READ_PROJECT_LIST);
@@ -74,7 +65,7 @@ public class HomeController {
 
     @Data
     @AllArgsConstructor
-    static
+    public static
     class ReadProjectListDto {
         private Long projectIndex;
         private String projectName;

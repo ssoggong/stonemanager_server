@@ -1,12 +1,23 @@
 package com.ssoggong.stonemanager_server.service;
 
+import com.ssoggong.stonemanager_server.api.HomeController;
+import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
+import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.entity.Project;
+import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,4 +30,26 @@ public class UserService {
     public void saveUser(User user) { userRepository.save(user); }
 
     public Optional<User> findById(Long userId) { return userRepository.findById(userId); }
+
+    public List<HomeController.ReadProjectListDto> ReadProjectList(Long userId) {
+
+        User user = findById(userId).orElse(null);
+
+        if(user == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Set<ProjectUser> projectUserSet = user.getProjectUserSet();
+        Set<Project> projectSet = new HashSet<>();
+        for(ProjectUser projectUser: projectUserSet) {
+            projectSet.add(projectUser.getProject());
+        }
+
+        //엔티티 -> DTO 변환
+        List<HomeController.ReadProjectListDto> collect = projectSet.stream()
+                .map(p -> new HomeController.ReadProjectListDto(p.getIdx(), p.getProjectName(), p.getSubject().getName(), 100))
+                .collect(Collectors.toList());
+
+        return collect;
+    }
 }
