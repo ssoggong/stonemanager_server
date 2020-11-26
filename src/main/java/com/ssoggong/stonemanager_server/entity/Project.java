@@ -33,7 +33,8 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Schedule> scheduleList = new ArrayList<>();
 
-    private String name;
+    private String projectName;
+    private String teamName;
 
     //== 연관관계 메서드 ==//
     public void addProjectUser(ProjectUser projectUser) {
