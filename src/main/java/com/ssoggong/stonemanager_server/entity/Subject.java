@@ -36,6 +36,9 @@ public class Subject {
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private Set<UserSubject> userSubjectSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    private Set<Project> projectSet = new HashSet<>();
+
     //== 연관관계 메서드 ==//
     public void addUserSubject(UserSubject userSubject){
         userSubjectSet.add(userSubject);

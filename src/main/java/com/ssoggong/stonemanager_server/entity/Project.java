@@ -24,6 +24,10 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Schedule> scheduleSet = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_idx")
+    private Subject subject;
+
     private String projectName;
     private String teamName;
 
@@ -41,6 +45,11 @@ public class Project {
     public void addSchedule(Schedule schedule){
         scheduleSet.add(schedule);
         schedule.setProject(this);
+    }
+
+    public void setSubject(Subject subject){
+        this.subject = subject;
+        subject.getProjectSet().add(this);
     }
 
     //== 빌더 ==//
