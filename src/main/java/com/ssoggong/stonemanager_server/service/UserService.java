@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -15,4 +17,6 @@ public class UserService {
 
     @Transactional
     public void saveUser(User user) { userRepository.save(user); }
+
+    public Optional<User> findById(Long userId) { return userRepository.findById(userId); }
 }
