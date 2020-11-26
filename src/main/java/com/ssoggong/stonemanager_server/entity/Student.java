@@ -16,6 +16,7 @@ public class Student {
     @Column(name = "student_idx")
     private Long idx;
 
+    private String studentId;
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -38,7 +39,8 @@ public class Student {
 
     //== 빌더 ==//
     @Builder
-    public Student(String name, Department department, Set<SubjectStudent> subjectStudentSet) {
+    public Student(String studentId, String name, Department department, Set<SubjectStudent> subjectStudentSet) {
+        this.studentId = studentId;
         this.name = name;
         this.department = department;
         this.subjectStudentSet = subjectStudentSet;
