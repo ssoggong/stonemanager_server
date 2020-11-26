@@ -23,6 +23,7 @@ public class ScheduleTag {
     @OneToMany(mappedBy = "scheduleTag", cascade = CascadeType.ALL)
     private Set<ScheduleScheduleTag> scheduleScheduleTagSet = new HashSet<>();
 
+    //== 연관관계 메서드 ==//
     public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag){
         scheduleScheduleTagSet.add(scheduleScheduleTag);
         scheduleScheduleTag.setScheduleTag(this);
