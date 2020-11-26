@@ -45,9 +45,6 @@ public class User {
 
     private String email;
 
-    // 테이블 따로 뺄지 정해야함
-    private String department;
-
     //== 연관관계 메서드 ==//
     public void addUserSubject(UserSubject userSubject){
         userSubjectSet.add(userSubject);
@@ -72,5 +69,19 @@ public class User {
     public void addComment(Comment comment){
         commentSet.add(comment);
         comment.setUser(this);
+    }
+
+    //== 빌더 ==//
+    public User(Set<UserSubject> userSubjectSet, Set<ProjectUser> projectUserSet, Set<UserTask> userTaskSet, Set<UserSchedule> userScheduleSet, Set<Comment> commentSet, String id, String pw, String salt, String image, String email) {
+        this.userSubjectSet = userSubjectSet;
+        this.projectUserSet = projectUserSet;
+        this.userTaskSet = userTaskSet;
+        this.userScheduleSet = userScheduleSet;
+        this.commentSet = commentSet;
+        this.id = id;
+        this.pw = pw;
+        this.salt = salt;
+        this.image = image;
+        this.email = email;
     }
 }

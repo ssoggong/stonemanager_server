@@ -25,4 +25,9 @@ public class SubjectStudent {
     @JoinColumn(name = "student_idx")
     private Student student;
 
+    //== 빌더 ==//
+    public SubjectStudent(Subject subject, Student student) {
+        this.subject = subject;
+        this.student = student;
+    }
 }

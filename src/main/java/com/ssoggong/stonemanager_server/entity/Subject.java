@@ -36,6 +36,9 @@ public class Subject {
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private Set<UserSubject> userSubjectSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    private Set<Project> projectSet = new HashSet<>();
+
     //== 연관관계 메서드 ==//
     public void addUserSubject(UserSubject userSubject){
         userSubjectSet.add(userSubject);
@@ -59,11 +62,14 @@ public class Subject {
 
     //== 빌더 ==//
     @Builder
-    public Subject(String name, String year, String semester, Department department, Set<UserSubject> userSubjectSet) {
+    public Subject(String name, String year, String semester, Professor professor, Department department,Set<SubjectStudent> subjectStudentSet, Set<UserSubject> userSubjectSet, Set<Project> projectSet) {
         this.name = name;
         this.year = year;
         this.semester = semester;
+        this.professor = professor;
         this.department = department;
+        this.subjectStudentSet = subjectStudentSet;
         this.userSubjectSet = userSubjectSet;
+        this.projectSet = projectSet;
     }
 }
