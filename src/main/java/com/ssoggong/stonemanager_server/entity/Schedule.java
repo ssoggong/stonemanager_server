@@ -32,9 +32,6 @@ public class Schedule {
 
     private String description;
 
-    // 필요 여부 확인
-    private LocalDateTime createdTime;
-
     //== 연관관계 메서드 ==//
     public void setUserSchedule(UserSchedule userSchedule){
         userScheduleList.add(userSchedule);
