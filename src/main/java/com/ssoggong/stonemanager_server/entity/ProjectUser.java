@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class ProjectUser {
 
     @Id @GeneratedValue
-    @Column(name = "project_user_id")
+    @Column(name = "project_user_idx")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
