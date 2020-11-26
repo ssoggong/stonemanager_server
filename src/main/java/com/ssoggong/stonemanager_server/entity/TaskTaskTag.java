@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class TaskTaskTag {
     @Id
     @GeneratedValue
-    @Column(name = "task_tasktag_idx")
+    @Column(name = "task_taskTag_idx")
     private Long idx;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -19,7 +19,7 @@ public class TaskTaskTag {
     private Task task;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "tasktag_idx")
+    @JoinColumn(name = "taskTag_idx")
     private TaskTag taskTag;
 
     //== 빌더 ==//

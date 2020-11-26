@@ -19,7 +19,7 @@ public class Subject {
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(table = "PROFESSOR", name = "professor_idx")
+    @JoinColumn(name = "professor_idx")
     private Professor professor;
 
     private String year;
@@ -27,7 +27,7 @@ public class Subject {
     private String semester;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(table = "DEPARTMENT", name = "department_idx")
+    @JoinColumn(name = "department_idx")
     private Department department;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)

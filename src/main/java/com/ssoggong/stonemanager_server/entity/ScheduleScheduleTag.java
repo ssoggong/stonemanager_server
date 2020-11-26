@@ -7,11 +7,11 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "schedule_scheduletag")
+@Table(name = "schedule_scheduleTag")
 public class ScheduleScheduleTag {
     @Id
     @GeneratedValue
-    @Column(name = "schedule_scheduletag_idx")
+    @Column(name = "schedule_scheduleTag_idx")
     private Long idx;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -19,7 +19,7 @@ public class ScheduleScheduleTag {
     private Schedule schedule;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "scheduletag_idx")
+    @JoinColumn(name = "scheduleTag_idx")
     private ScheduleTag scheduleTag;
 
     //== 빌더 ==//

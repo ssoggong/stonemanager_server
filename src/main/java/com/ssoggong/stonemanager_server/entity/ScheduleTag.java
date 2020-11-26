@@ -13,14 +13,14 @@ import java.util.Set;
 public class ScheduleTag {
     @Id
     @GeneratedValue
-    @Column(name = "scheduletag_idx")
+    @Column(name = "scheduleTag_idx")
     private Long idx;
 
     private String name;
 
     private Integer color;
 
-    @OneToMany(mappedBy = "scheduletag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "scheduleTag", cascade = CascadeType.ALL)
     private Set<ScheduleScheduleTag> scheduleScheduleTagSet = new HashSet<>();
 
     public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag){

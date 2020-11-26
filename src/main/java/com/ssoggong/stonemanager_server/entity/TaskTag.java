@@ -16,14 +16,14 @@ import java.util.Set;
 public class TaskTag {
     @Id
     @GeneratedValue
-    @Column(name = "tasktag_idx")
+    @Column(name = "taskTag_idx")
     private Long idx;
 
     private String name;
 
     private Integer color;
 
-    @OneToMany(mappedBy = "tasktag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "taskTag", cascade = CascadeType.ALL)
     private Set<TaskTaskTag> taskTaskTagSet = new HashSet<>();
 
     //== 연관관계 메서드==//
