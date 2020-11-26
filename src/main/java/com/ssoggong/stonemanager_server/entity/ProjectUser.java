@@ -11,7 +11,7 @@ public class ProjectUser {
 
     @Id @GeneratedValue
     @Column(name = "project_user_idx")
-    private Long id;
+    private Long idx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
