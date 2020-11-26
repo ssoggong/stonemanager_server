@@ -1,16 +1,14 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access =  AccessLevel.PROTECTED)
 public class Project {
 
     @Id @GeneratedValue
@@ -43,5 +41,15 @@ public class Project {
     public void addSchedule(Schedule schedule){
         scheduleSet.add(schedule);
         schedule.setProject(this);
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public Project(Set<ProjectUser> projectUserSet, Set<Task> taskSet, Set<Schedule> scheduleSet, String projectName, String teamName) {
+        this.projectUserSet = projectUserSet;
+        this.taskSet = taskSet;
+        this.scheduleSet = scheduleSet;
+        this.projectName = projectName;
+        this.teamName = teamName;
     }
 }

@@ -1,8 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,8 +8,7 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "DEPARTMENT")
 public class Department {
     @Id
@@ -29,4 +26,13 @@ public class Department {
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private Set<Subject> subjectSet = new HashSet<>();
+
+    //== 빌더 ==//
+    @Builder
+    public Department(String name, Set<Student> studentSet, Set<Professor> professorSet, Set<Subject> subjectSet) {
+        this.name = name;
+        this.studentSet = studentSet;
+        this.professorSet = professorSet;
+        this.subjectSet = subjectSet;
+    }
 }

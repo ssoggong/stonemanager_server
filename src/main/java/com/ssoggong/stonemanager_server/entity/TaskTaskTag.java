@@ -1,15 +1,12 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TASK_TASKTAG")
 public class TaskTaskTag {
     @Id
@@ -24,4 +21,11 @@ public class TaskTaskTag {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "tasktag_idx")
     private TaskTag taskTag;
+
+    //== 빌더 ==//
+    @Builder
+    public TaskTaskTag(Task task, TaskTag taskTag) {
+        this.task = task;
+        this.taskTag = taskTag;
+    }
 }

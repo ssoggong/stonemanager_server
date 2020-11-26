@@ -1,12 +1,12 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File {
 
     @Id @GeneratedValue
@@ -19,8 +19,16 @@ public class File {
 
     private String name;
 
+    //== 연관관계 메서드 ==//
     public void setTask(Task task){
         this.task = task;
-        task.getFiles().add(this);
+        task.getFileSet().add(this);
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public File(Task task, String name) {
+        this.task = task;
+        this.name = name;
     }
 }

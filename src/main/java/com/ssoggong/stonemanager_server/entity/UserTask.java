@@ -1,12 +1,12 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserTask {
 
     @Id @GeneratedValue
@@ -21,4 +21,10 @@ public class UserTask {
     @JoinColumn(name = "task_idx")
     private Task task;
 
+    //== 빌더 ==//
+    @Builder
+    public UserTask(User user, Task task) {
+        this.user = user;
+        this.task = task;
+    }
 }

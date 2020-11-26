@@ -1,13 +1,13 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
 
     @Id @GeneratedValue
@@ -25,8 +25,18 @@ public class Comment {
     private String content;
     private LocalDateTime createdDate; // 타입 확인 필요
 
+    //== 연관관계 메서드 ==//
     public void setTask(Task tast){
         this.task = tast;
-        tast.getComments().add(this);
+        tast.getCommentSet().add(this);
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public Comment(Task task, User user, String content, LocalDateTime createdDate){
+        this.task = task;
+        this.user = user;
+        this.content = content;
+        this.createdDate = createdDate;
     }
 }

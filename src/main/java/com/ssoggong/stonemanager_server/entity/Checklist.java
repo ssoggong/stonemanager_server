@@ -1,12 +1,12 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Checklist {
 
     @Id @GeneratedValue
@@ -22,6 +22,14 @@ public class Checklist {
 
     public void setTask(Task task){
         this.task = task;
-        task.getCheckLists().add(this);
+        task.getChecklistSet().add(this);
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public Checklist(Task task, String name, Boolean state) {
+        this.task = task;
+        this.name = name;
+        this.state = state;
     }
 }

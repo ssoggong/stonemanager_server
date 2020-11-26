@@ -1,15 +1,12 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "schedule_scheduletag")
 public class ScheduleScheduleTag {
     @Id
@@ -24,4 +21,11 @@ public class ScheduleScheduleTag {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "scheduletag_idx")
     private ScheduleTag scheduleTag;
+
+    //== 빌더 ==//
+    @Builder
+    public ScheduleScheduleTag (Schedule schedule, ScheduleTag scheduleTag) {
+        this.schedule = schedule;
+        this.scheduleTag = scheduleTag;
+    }
 }

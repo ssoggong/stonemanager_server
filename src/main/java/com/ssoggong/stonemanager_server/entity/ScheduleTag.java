@@ -1,8 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,8 +8,7 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "SCHEDULETAG")
 public class ScheduleTag {
     @Id
@@ -29,5 +26,13 @@ public class ScheduleTag {
     public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag){
         scheduleScheduleTagSet.add(scheduleScheduleTag);
         scheduleScheduleTag.setScheduleTag(this);
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public ScheduleTag(String name, Integer color, Set<ScheduleScheduleTag> scheduleScheduleTagSet) {
+        this.name = name;
+        this.color = color;
+        this.scheduleScheduleTagSet = scheduleScheduleTagSet;
     }
 }

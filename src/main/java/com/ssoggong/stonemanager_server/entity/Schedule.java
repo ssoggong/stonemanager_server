@@ -1,7 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedule {
 
     @Id @GeneratedValue
@@ -43,5 +43,14 @@ public class Schedule {
     public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag) {
         scheduleScheduleTagSet.add(scheduleScheduleTag);
         scheduleScheduleTag.setSchedule(this);
+    }
+
+    @Builder
+    public Schedule(Project project, Set<ScheduleScheduleTag> scheduleScheduleTagSet, String name, LocalDateTime date, String description) {
+        this.project = project;
+        this.scheduleScheduleTagSet = scheduleScheduleTagSet;
+        this.name = name;
+        this.date = date;
+        this.description = description;
     }
 }
