@@ -54,10 +54,11 @@ public class Project {
 
     //== 빌더 ==//
     @Builder
-    public Project(Set<ProjectUser> projectUserSet, Set<Task> taskSet, Set<Schedule> scheduleSet, String projectName, String teamName) {
+    public Project(Set<ProjectUser> projectUserSet, Set<Task> taskSet, Set<Schedule> scheduleSet, Subject subject, String projectName, String teamName) {
         this.projectUserSet = projectUserSet;
         this.taskSet = taskSet;
         this.scheduleSet = scheduleSet;
+        this.subject = subject;
         this.projectName = projectName;
         this.teamName = teamName;
     }
