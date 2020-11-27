@@ -7,6 +7,7 @@ import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ScheduleTag;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
+import com.ssoggong.stonemanager_server.exception.ScheduleTagNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
 import com.ssoggong.stonemanager_server.repository.ScheduleTagRepository;
@@ -55,5 +56,17 @@ public class ScheduleTagService {
             dto.add(ReadScheduleTagDto.of(scheduleTag));
         }
         return new ReadScheduleTagResponse(dto);
+    }
+
+    @Transactional
+    public void updateScheduleTag(Long userId, Long projectId, Long scheduleTagId, CreateScheduleTagRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+
+        scheduleTag.setName(request.getTagName());
+        scheduleTag.setColor(request.getTagColor());
+
+        saveScheduleTag(scheduleTag);
     }
 }
