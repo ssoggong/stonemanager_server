@@ -20,7 +20,7 @@ public class ResponseMessage {
 
     public static final String READ_SCHEDULE_LIST = "일정 목록 조회 성공";
     public static final String CREATE_SCHEDULE = "일정 생성 성공";
-    public static final String READ_SCHEDULE = "일정 조회 성공";
+    public static final String READ_SCHEDULE_DETAIL = "일정 상세 조회 성공";
     public static final String UPDATE_SCHEDULE = "일정 변경 성공";
     public static final String DELETE_SCHEDULE = "일정 삭제 성공";
 
