@@ -3,7 +3,6 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
-import com.ssoggong.stonemanager_server.dto.ReadProjectListDto;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
