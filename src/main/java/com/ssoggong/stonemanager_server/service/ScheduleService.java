@@ -4,10 +4,7 @@ import com.ssoggong.stonemanager_server.dto.CreateScheduleRequest;
 import com.ssoggong.stonemanager_server.entity.*;
 import com.ssoggong.stonemanager_server.exception.ScheduleTagNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
-import com.ssoggong.stonemanager_server.repository.ProjectRepository;
-import com.ssoggong.stonemanager_server.repository.ScheduleRepository;
-import com.ssoggong.stonemanager_server.repository.ScheduleTagRepository;
-import com.ssoggong.stonemanager_server.repository.UserRepository;
+import com.ssoggong.stonemanager_server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +22,8 @@ public class ScheduleService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ScheduleTagRepository scheduleTagRepository;
+    private final UserScheduleRepository userScheduleRepository;
+    private final ScheduleScheduleTagRepository scheduleScheduleTagRepository;
 
 
     @Transactional
@@ -36,35 +35,34 @@ public class ScheduleService {
         List<Long> assigneeIdList =  request.getScheduleAssigneeIdList();
         List<Long> scheduleTagIdList = request.getScheduleTagIdList();
 
-        Set<UserSchedule> userScheduleSet = new HashSet<>();
-        for(Long assigneeId : assigneeIdList) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
-            UserSchedule userSchedule = UserSchedule.builder()
-                    .user(assignee)
-                    .build();
-
-            userScheduleSet.add(userSchedule);
-        }
-
-        Set<ScheduleScheduleTag> scheduleScheduleTagSet = new HashSet<>();
-        for(Long scheduleTagId: scheduleTagIdList) {
-            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
-            ScheduleScheduleTag scheduleScheduleTag = ScheduleScheduleTag.builder()
-                    .scheduleTag(scheduleTag)
-                    .build();
-
-            scheduleScheduleTagSet.add(scheduleScheduleTag);
-        }
-
+        //== 프로젝트 생성 ==//
         Project project = projectRepository.findById(projectId).orElseThrow();
         Schedule schedule = Schedule.builder()
                 .name(request.getScheduleName())
                 .date(request.getScheduleDate())
                 .description(request.getScheduleDescription())
-                .userScheduleSet(userScheduleSet)
-                .scheduleScheduleTagSet(scheduleScheduleTagSet)
                 .project(project)
+                .userScheduleSet(new HashSet<>())
+                .scheduleScheduleTagSet(new HashSet<>())
                 .build();
+
+        //== userSchedule 생성 및 연관관계 설정 ==//
+        for(Long assigneeId : assigneeIdList) {
+            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
+            UserSchedule userSchedule = UserSchedule.builder()
+                    .user(assignee)
+                    .schedule(schedule)
+                    .build();
+        }
+
+        //== scheduleScheduleTag 생성 및 연관관계 설정 ==//
+        for(Long scheduleTagId: scheduleTagIdList) {
+            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+            ScheduleScheduleTag scheduleScheduleTag = ScheduleScheduleTag.builder()
+                    .scheduleTag(scheduleTag)
+                    .schedule(schedule)
+                    .build();
+        }
 
         saveSchedule(schedule);
     }
