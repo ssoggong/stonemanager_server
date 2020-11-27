@@ -1,5 +1,7 @@
 package com.ssoggong.stonemanager_server.service;
 
+import com.ssoggong.stonemanager_server.dto.ReadProjectListDto;
+import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.api.HomeController;
@@ -31,26 +33,14 @@ public class UserService {
 
     public Optional<User> findById(Long userId) { return userRepository.findById(userId); }
 
-    public List<HomeController.ReadProjectListDto> ReadProjectList(Long userId) {
-
-        User user = findById(userId).orElse(null);
-
-        if(user == null) {
-            throw new IllegalArgumentException();
-        }
-
+    public ReadProjectListResponse ReadProjectList(Long userId) {
+        User user = findById(userId).orElseThrow(UserNotFoundException::new);
         Set<ProjectUser> projectUserSet = user.getProjectUserSet();
-        Set<Project> projectSet = new HashSet<>();
+        List<ReadProjectListDto> dto = new ArrayList<>();
         for(ProjectUser projectUser: projectUserSet) {
-            projectSet.add(projectUser.getProject());
+            dto.add(ReadProjectListDto.of(projectUser.getProject()));
         }
-
-        //엔티티 -> DTO 변환
-        List<HomeController.ReadProjectListDto> collect = projectSet.stream()
-                .map(p -> new HomeController.ReadProjectListDto(p.getIdx(), p.getProjectName(), p.getSubject().getName(), 100))
-                .collect(Collectors.toList());
-
-        return collect;
+        return new ReadProjectListResponse(dto);
     }
 
     public ProjectWithdrawResponse getProjectForWithdraw(Long userId) {

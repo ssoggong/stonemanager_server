@@ -3,6 +3,7 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
@@ -11,7 +12,6 @@ import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,43 +33,10 @@ public class HomeController {
     private final UserService userService;
     private final ProjectService projectService;
 
-    ModelMapper modelMapper = new ModelMapper();
-
     @GetMapping
     public ResponseEntity<Message> readProjectList(@RequestHeader("userIndex") Long userId) {
-
-        Message message = new Message();
-        List<ReadProjectListDto> collect;
-        try{
-            collect = userService.ReadProjectList(userId);
-        }
-        catch (IllegalArgumentException i) {
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.READ_PROJECT_LIST);
-        message.setData(new Result(collect));
+        ReadProjectListResponse response = userService.ReadProjectList(userId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private T projectInfo;
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static
-    class ReadProjectListDto {
-        private Long projectIndex;
-        private String projectName;
-        private String projectSubject;
-        private Integer projectProgress;
-    }
-
 }
