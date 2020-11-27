@@ -1,6 +1,7 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.CreateScheduleTagRequest;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleTagDto;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ScheduleTag;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,9 +48,12 @@ public class ScheduleTagService {
     public ReadScheduleTagResponse readScheduleTag(Long userId, Long projectId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        Set<ScheduleTag> scheduleTagList = project.getScheduleTagSet();
 
-        Set<ScheduleTag> scheduleTagList = project.getS();
-
-        return response;
+        List<ReadScheduleTagDto> dto = new ArrayList<>();
+        for(ScheduleTag scheduleTag: scheduleTagList) {
+            dto.add(ReadScheduleTagDto.of(scheduleTag));
+        }
+        return new ReadScheduleTagResponse(dto);
     }
 }
