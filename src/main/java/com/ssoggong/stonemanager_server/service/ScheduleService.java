@@ -27,6 +27,8 @@ public class ScheduleService {
     private final ScheduleTagRepository scheduleTagRepository;
     private final UserScheduleRepository userScheduleRepository;
     private final ScheduleScheduleTagRepository scheduleScheduleTagRepository;
+    private final UserScheduleService userScheduleService;
+    private final ScheduleScheduleTagService scheduleScheduleTagService;
 
 
     @Transactional
@@ -100,5 +102,45 @@ public class ScheduleService {
         ReadScheduleDetailDto dto = ReadScheduleDetailDto.of(schedule);
 
         return new ReadScheduleDetailResponse(dto);
+    }
+
+    @Transactional
+    public void updateSchedule(Long userId, Long projectId, Long scheduleId, UpdateScheduleRequest request) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
+
+        schedule.setName(request.getScheduleName());
+        schedule.setDate(request.getScheduleDate());
+        schedule.setDescription(request.getScheduleDescription());
+
+        for(UserSchedule userSchedule: schedule.getUserScheduleSet()) {
+            userSchedule.setSchedule(null);
+            userScheduleRepository.delete(userSchedule);
+        }
+
+        for(ScheduleScheduleTag scheduleScheduleTag: schedule.getScheduleScheduleTagSet()) {
+            scheduleScheduleTag.setSchedule(null);
+            scheduleScheduleTagRepository.delete(scheduleScheduleTag);
+        }
+
+        for(Long assigneeId: request.getScheduleAssigneeIdList()) {
+            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
+            UserSchedule userSchedule = UserSchedule.builder()
+                    .user(assignee)
+                    .schedule(schedule)
+                    .build();
+        }
+
+        for(Long scheduleTagId: request.getScheduleTagIdList()) {
+            System.out.println(scheduleTagId);
+            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+            ScheduleScheduleTag scheduleScheduleTag = ScheduleScheduleTag.builder()
+                    .scheduleTag(scheduleTag)
+                    .schedule(schedule)
+                    .build();
+        }
+
+        scheduleRepository.save(schedule);
     }
 }
