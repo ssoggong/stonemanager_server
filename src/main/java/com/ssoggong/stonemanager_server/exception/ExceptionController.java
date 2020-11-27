@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
     @ExceptionHandler({
             UserNotFoundException.class,
-            NotFoundException.class
+            ProjectNotFoundException.class,
+            NotFoundException.class,
+            ScheduleTagNotFoundException.class
     })
     public HttpEntity<Message> BadRequestException(final RuntimeException exception){
         Message message = new Message(400, ResponseMessage.NOT_FOUNT_VALUE);
