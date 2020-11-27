@@ -19,7 +19,6 @@ public class Task {
     private String name;
     private String description;
     private LocalDateTime deadline;
-    private int state;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_idx")
@@ -42,13 +41,12 @@ public class Task {
 
     //==빌더==//
     @Builder
-    public Task(String name, String description, LocalDateTime deadline, int state, Project project, Set<Comment> commentSet, Set<File> fileSet, Set<Checklist> checklistSet, Set<UserTask> userTaskSet, Set<TaskTaskTag> taskTaskTagSet) {
+    public Task(String name, String description, LocalDateTime deadline, Project project, Set<Comment> commentSet, Set<File> fileSet, Set<Checklist> checklistSet, Set<UserTask> userTaskSet, Set<TaskTaskTag> taskTaskTagSet) {
         this.name = name;
         this.project = project;
         project.getTaskSet().add(this); //== 연관관계 설정 ==//
         this.description = description;
         this.deadline = deadline;
-        this.state = state;
         this.commentSet = commentSet;
         this.fileSet = fileSet;
         this.checklistSet = checklistSet;

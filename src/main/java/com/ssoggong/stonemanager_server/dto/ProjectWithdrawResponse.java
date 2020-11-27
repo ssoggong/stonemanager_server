@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto.project;
+package com.ssoggong.stonemanager_server.dto;
 
 import lombok.*;
 
