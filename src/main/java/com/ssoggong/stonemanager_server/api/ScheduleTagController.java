@@ -38,4 +38,12 @@ public class ScheduleTagController {
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_SCHEDULE_TAG);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{tagIndex}")
+    public ResponseEntity<Message> deleteScheduleTag(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("tagIndex") Long scheduleTagId) {
+        scheduleTagService.deleteScheduleTag(userId, projectId, scheduleTagId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_SCHEDULE_TAG);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
 }
