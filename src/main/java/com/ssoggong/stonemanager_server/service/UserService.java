@@ -2,10 +2,8 @@ package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.ReadProjectListDto;
 import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
-import com.ssoggong.stonemanager_server.dto.ProjectWithdrawDto;
-import com.ssoggong.stonemanager_server.dto.ProjectWithdrawResponse;
-import com.ssoggong.stonemanager_server.api.HomeController;
-import com.ssoggong.stonemanager_server.entity.Project;
+import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
+import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
@@ -15,11 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)

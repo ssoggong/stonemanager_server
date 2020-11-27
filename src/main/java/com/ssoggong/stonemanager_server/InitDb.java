@@ -1,6 +1,7 @@
 package com.ssoggong.stonemanager_server;
 
 import com.ssoggong.stonemanager_server.entity.*;
+import com.ssoggong.stonemanager_server.util.Constants;
 import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,6 +141,14 @@ public class InitDb {
             return scheduleTag;
         }
 
+        private TaskTag createTaskTag(String name, Integer color){
+            TaskTag taskTag = TaskTag.builder()
+                    .name(name)
+                    .color(color)
+                    .build();
+            return taskTag;
+        }
+
         private final EntityManager em;
         public void dbInit1(){
 
@@ -174,6 +184,15 @@ public class InitDb {
             ScheduleTag scheduleTag2 = createScheduleTag("scheduleTag2", 2);
             em.persist(scheduleTag1);
             em.persist(scheduleTag2);
+
+            TaskTag taskTag1 = createTaskTag("TODO", 1);
+            TaskTag taskTag2 = createTaskTag("PROGRESS", 2);
+            TaskTag taskTag3 = createTaskTag("COMPLETE", 3);
+            TaskTag taskTag4 = createTaskTag("PENDING", 4);
+            em.persist(taskTag1);
+            em.persist(taskTag2);
+            em.persist(taskTag3);
+            em.persist(taskTag4);
         }
 
     }
