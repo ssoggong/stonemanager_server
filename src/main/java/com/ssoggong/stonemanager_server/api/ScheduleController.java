@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.CreateScheduleRequest;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleDetailResponse;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleListResponse;
 import com.ssoggong.stonemanager_server.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,13 @@ public class ScheduleController {
     public ResponseEntity<Message> deleteSchedule(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @RequestHeader("scheduleIndex") Long scheduleId) {
         scheduleService.deleteSchedule(userId, projectId, scheduleId);
         Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_SCHEDULE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/{scheduleIndex}")
+    public ResponseEntity<Message> readScheduleDetail(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("scheduleIndex") Long scheduleId) {
+        ReadScheduleDetailResponse response = scheduleService.readScheduleDetail(userId, projectId, scheduleId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_SCHEDULE_DETAIL, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

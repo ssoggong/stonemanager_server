@@ -1,8 +1,6 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.CreateScheduleRequest;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleListDto;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleListResponse;
+import com.ssoggong.stonemanager_server.dto.*;
 import com.ssoggong.stonemanager_server.entity.*;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
 import com.ssoggong.stonemanager_server.exception.ScheduleNotFoundException;
@@ -92,5 +90,15 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
 
         scheduleRepository.deleteById(scheduleId);
+    }
+
+    public ReadScheduleDetailResponse readScheduleDetail(Long userId, Long projectId, Long scheduleId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
+
+        ReadScheduleDetailDto dto = ReadScheduleDetailDto.of(schedule);
+
+        return new ReadScheduleDetailResponse(dto);
     }
 }
