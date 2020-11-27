@@ -6,6 +6,7 @@ import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.CreateScheduleRequest;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleDetailResponse;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleListResponse;
+import com.ssoggong.stonemanager_server.dto.UpdateScheduleRequest;
 import com.ssoggong.stonemanager_server.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,13 @@ public class ScheduleController {
     public ResponseEntity<Message> readScheduleDetail(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("scheduleIndex") Long scheduleId) {
         ReadScheduleDetailResponse response = scheduleService.readScheduleDetail(userId, projectId, scheduleId);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_SCHEDULE_DETAIL, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PutMapping("/{scheduleIndex}")
+    public ResponseEntity<Message> updateSchedule(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("scheduleIndex") Long scheduleId, @RequestBody  UpdateScheduleRequest request) {
+        scheduleService.updateSchedule(userId, projectId, scheduleId, request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_SCHEDULE);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

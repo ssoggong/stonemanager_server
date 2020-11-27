@@ -10,7 +10,6 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "TASK")
 public class Task {
     @Id
     @GeneratedValue
@@ -21,7 +20,7 @@ public class Task {
     private String description;
     private LocalDateTime deadline;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_idx")
     private Project project;
 

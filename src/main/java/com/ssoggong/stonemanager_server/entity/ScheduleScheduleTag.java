@@ -7,18 +7,17 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "schedule_scheduleTag")
 public class ScheduleScheduleTag {
     @Id
     @GeneratedValue
     @Column(name = "schedule_scheduleTag_idx")
     private Long idx;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_idx")
     private Schedule schedule;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scheduleTag_idx")
     private ScheduleTag scheduleTag;
 
@@ -28,6 +27,7 @@ public class ScheduleScheduleTag {
         this.schedule = schedule;
         this.scheduleTag = scheduleTag;
         //== 연관관계 설정 ==//
+        schedule.getScheduleScheduleTagSet().add(this);
         scheduleTag.getScheduleScheduleTagSet().add(this);
     }
 }

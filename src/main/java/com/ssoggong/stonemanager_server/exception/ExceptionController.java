@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.exception;
 
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
+import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

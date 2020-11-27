@@ -134,6 +134,7 @@ public class InitDb {
             ScheduleTag scheduleTag = ScheduleTag.builder()
                     .name(name)
                     .color(color)
+                    .scheduleScheduleTagSet(new HashSet<>())
                     .build();
 
             return scheduleTag;
