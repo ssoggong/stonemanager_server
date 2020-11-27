@@ -31,4 +31,11 @@ public class ScheduleTagController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_SCHEDULE_TAG, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @PutMapping("/{tagIndex}")
+    public ResponseEntity<Message> updateScheduleTag(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("tagIndex") Long scheduleTagId,@RequestBody CreateScheduleTagRequest request) {
+        scheduleTagService.updateScheduleTag(userId, projectId, scheduleTagId, request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_SCHEDULE_TAG);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
