@@ -1,9 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -26,6 +23,7 @@ public class SubjectStudent {
     private Student student;
 
     //== 빌더 ==//
+    @Builder
     public SubjectStudent(Subject subject, Student student) {
         this.subject = subject;
         this.student = student;
