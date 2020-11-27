@@ -57,15 +57,10 @@ public class InitDb {
 
             Set<Student> studentSet = new HashSet<>();
 
-            Student student1 = createStudent("고운", "2016112182");
-            Student student2 = createStudent("종근", "2016112107");
-            Student student3 = createStudent("윤호", "2016112100");
-            Student student4 = createStudent("영훈", "2016112101");
-
-            student1.setDepartment(department);
-            student2.setDepartment(department);
-            student3.setDepartment(department);
-            student4.setDepartment(department);
+            Student student1 = createStudent("고운", "2016112182", department);
+            Student student2 = createStudent("종근", "2016112107", department);
+            Student student3 = createStudent("윤호", "2016112100", department);
+            Student student4 = createStudent("영훈", "2016112101", department);
 
             studentSet.add(student1);
             studentSet.add(student2);
@@ -75,10 +70,11 @@ public class InitDb {
             return department;
         }
 
-        private Student createStudent(String name, String studentId){
+        private Student createStudent(String name, String studentId, Department department){
             Student student = Student.builder()
                     .name(name)
                     .studentId(studentId)
+                    .department(department)
                     .subjectStudentSet(new HashSet<>())
                     .build();
 
@@ -107,6 +103,9 @@ public class InitDb {
                     .scheduleSet(new HashSet<>())
                     .subject(subject)
                     .taskSet(new HashSet<>())
+                    .projectUserSet(new HashSet<>())
+                    .scheduleTagSet(new HashSet<>())
+                    .taskTagSet(new HashSet<>())
                     .build();
 
             return project;
@@ -116,6 +115,7 @@ public class InitDb {
             Professor professor = Professor.builder()
                     .name(name)
                     .department(department)
+                    .subjectSet(new HashSet<>())
                     .build();
 
             return professor;
@@ -130,11 +130,12 @@ public class InitDb {
             return projectUser;
         }
 
-        private ScheduleTag createScheduleTag(String name, Integer color) {
+        private ScheduleTag createScheduleTag(String name, Integer color, Project project) {
             ScheduleTag scheduleTag = ScheduleTag.builder()
                     .name(name)
                     .color(color)
                     .scheduleScheduleTagSet(new HashSet<>())
+                    .project(project)
                     .build();
 
             return scheduleTag;
@@ -171,8 +172,8 @@ public class InitDb {
             em.persist(projectUser2);
             em.persist(projectUser3);
 
-            ScheduleTag scheduleTag1 = createScheduleTag("scheduleTag1", 1);
-            ScheduleTag scheduleTag2 = createScheduleTag("scheduleTag2", 2);
+            ScheduleTag scheduleTag1 = createScheduleTag("scheduleTag1", 1, project1);
+            ScheduleTag scheduleTag2 = createScheduleTag("scheduleTag2", 2, project1);
             em.persist(scheduleTag1);
             em.persist(scheduleTag2);
         }
