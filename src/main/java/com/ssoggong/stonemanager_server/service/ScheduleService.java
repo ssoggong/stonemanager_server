@@ -1,7 +1,10 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.CreateScheduleRequest;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleListDto;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleListResponse;
 import com.ssoggong.stonemanager_server.entity.*;
+import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
 import com.ssoggong.stonemanager_server.exception.ScheduleTagNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.*;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,5 +69,18 @@ public class ScheduleService {
         }
 
         saveSchedule(schedule);
+    }
+
+    public ReadScheduleListResponse readSchedule(Long userId, Long projectId, int year, int month) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        List<Schedule> scheduleList = scheduleRepository.readScheduleByYearAndMonth(year, month, projectId);
+
+        List<ReadScheduleListDto> dto = new ArrayList<>();
+        for(Schedule schedule: scheduleList) {
+            dto.add(ReadScheduleListDto.of(schedule));
+        }
+
+        return new ReadScheduleListResponse(dto);
     }
 }
