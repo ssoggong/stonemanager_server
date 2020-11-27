@@ -31,4 +31,11 @@ public class ScheduleController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_SCHEDULE_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Message> deleteSchedule(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @RequestHeader("scheduleIndex") Long scheduleId) {
+        scheduleService.deleteSchedule(userId, projectId, scheduleId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_SCHEDULE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
