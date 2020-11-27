@@ -25,17 +25,13 @@ public class Comment {
     private String content;
     private LocalDateTime createdDate; // 타입 확인 필요
 
-    //== 연관관계 메서드 ==//
-    public void setTask(Task tast){
-        this.task = tast;
-        tast.getCommentSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public Comment(Task task, User user, String content, LocalDateTime createdDate){
         this.task = task;
+        task.getCommentSet().add(this);
         this.user = user;
+        user.getCommentSet().add(this);
         this.content = content;
         this.createdDate = createdDate;
     }

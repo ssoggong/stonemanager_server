@@ -25,23 +25,13 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<SubjectStudent> subjectStudentSet = new HashSet<>();
 
-    //== 연관관계 메서드 ==//
-    public void setDepartment(Department department){
-        this.department = department;
-        department.getStudentSet().add(this);
-    }
-
-    public void addSubjectStudent(SubjectStudent subjectStudent){
-        subjectStudentSet.add(subjectStudent);
-        subjectStudent.setStudent(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public Student(String studentId, String name, Department department, Set<SubjectStudent> subjectStudentSet) {
         this.studentId = studentId;
         this.name = name;
         this.department = department;
+        department.getStudentSet().add(this);
         this.subjectStudentSet = subjectStudentSet;
     }
 }

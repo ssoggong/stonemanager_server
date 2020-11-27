@@ -24,17 +24,12 @@ public class Professor {
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private Set<Subject> subjectSet = new HashSet<>();
 
-    //== 연관관계 메서드 ==//
-    public void setDepartment(Department department){
-        this.department = department;
-        department.getProfessorSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public Professor(String name, Department department, Set<Subject> subjectSet) {
         this.name = name;
         this.department = department;
+        department.getProfessorSet().add(this); //== 연관관계 설정 ==//
         this.subjectSet = subjectSet;
     }
 }

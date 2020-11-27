@@ -25,6 +25,8 @@ public class TaskTaskTag {
     @Builder
     public TaskTaskTag(Task task, TaskTag taskTag) {
         this.task = task;
+        task.getTaskTaskTagSet().add(this); //== 연관관계 설정 ==//
         this.taskTag = taskTag;
+        taskTag.getTaskTaskTagSet().add(this); //== 연관관계 설정 ==//
     }
 }

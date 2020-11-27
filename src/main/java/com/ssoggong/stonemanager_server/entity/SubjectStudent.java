@@ -25,6 +25,8 @@ public class SubjectStudent {
     @Builder
     public SubjectStudent(Subject subject, Student student) {
         this.subject = subject;
+        subject.getSubjectStudentSet().add(this);
         this.student = student;
+        student.getSubjectStudentSet().add(this);
     }
 }
