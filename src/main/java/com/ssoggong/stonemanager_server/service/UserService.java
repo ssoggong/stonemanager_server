@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.dto.ReadProjectListDto;
 import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
+import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
@@ -47,5 +48,10 @@ public class UserService {
             dto.add(ProjectWithdrawDto.of(projectUser.getProject()));
         }
         return new ProjectWithdrawResponse(dto);
+    }
+
+    public UserInfoResponse readUserInfo(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return new UserInfoResponse(user.getName(), user.getStudentId(), user.getEmail(), user.getEmail());
     }
 }
