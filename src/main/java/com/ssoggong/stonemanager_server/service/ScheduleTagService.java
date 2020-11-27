@@ -69,4 +69,12 @@ public class ScheduleTagService {
 
         saveScheduleTag(scheduleTag);
     }
+
+    @Transactional
+    public void deleteScheduleTag(Long userId, Long projectId, Long scheduleTagId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+        scheduleTagRepository.delete(scheduleTag);
+    }
 }
