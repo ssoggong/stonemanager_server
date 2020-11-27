@@ -9,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectWithdrawResponse {
-    private List<ProjectWithdrawDto> data;
+    private List<ProjectWithdrawDto> projects;
 }
