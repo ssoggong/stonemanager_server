@@ -25,6 +25,7 @@ public class ResponseMessage {
     public static final String DELETE_SCHEDULE = "일정 삭제 성공";
 
     public static final String READ_SCHEDULE_TAG_LIST = "일정 태그 목록 조회 성공";
+    public static final String CREATE_SCHEDULE_TAG = "일정 태그 생성 성공";
     public static final String READ_SCHEDULE_TAG = "일정 태그 조회 성공";
     public static final String UPDATE_SCHEDULE_TAG = "일정 태그 변겅 성공";
     public static final String DELETE_SCHEDULE_TAG = "일정 태그 삭제 성공";
