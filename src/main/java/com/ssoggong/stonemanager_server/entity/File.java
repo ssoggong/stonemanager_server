@@ -18,12 +18,14 @@ public class File {
     private Task task;
 
     private String name;
+    private String fileUri;
 
     //== 빌더 ==//
     @Builder
-    public File(Task task, String name) {
+    public File(Task task, String name, String uri) {
         this.task = task;
         task.getFileSet().add(this);
         this.name = name;
+        this.fileUri = uri;
     }
 }
