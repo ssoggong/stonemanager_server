@@ -15,5 +15,4 @@ public class ProjectService {
 
     @Transactional
     public void saveProject(Project project) { projectRepository.save(project); }
-
 }
