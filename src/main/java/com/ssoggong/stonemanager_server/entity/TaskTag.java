@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "TASKTAG")
 public class TaskTag {
     @Id
     @GeneratedValue
@@ -20,20 +19,21 @@ public class TaskTag {
 
     private Integer color;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @OneToMany(mappedBy = "taskTag", cascade = CascadeType.ALL)
     private Set<TaskTaskTag> taskTaskTagSet = new HashSet<>();
 
-    //== 연관관계 메서드==//
-    public void addTaskTaskTag(TaskTaskTag taskTaskTag){
-        taskTaskTagSet.add(taskTaskTag);
-        taskTaskTag.setTaskTag(this);
-    }
-
     //==빌더==//
     @Builder
-    public TaskTag(String name, Integer color, Set<TaskTaskTag> taskTaskTagSet) {
+    public TaskTag(String name, Integer color, Project project, Set<TaskTaskTag> taskTaskTagSet) {
         this.name = name;
         this.color = color;
+        this.project = project;
+        project.getTaskTagSet().add(this); //== 연관관계 설정 ==//
         this.taskTaskTagSet = taskTaskTagSet;
+
     }
 }

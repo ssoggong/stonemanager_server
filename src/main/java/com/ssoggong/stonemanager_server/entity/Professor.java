@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "PROFESSOR")
 public class Professor {
     @Id
     @GeneratedValue
@@ -18,24 +17,19 @@ public class Professor {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_idx")
     private Department department;
 
     @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
     private Set<Subject> subjectSet = new HashSet<>();
 
-    //== 연관관계 메서드 ==//
-    public void setDepartment(Department department){
-        this.department = department;
-        department.getProfessorSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public Professor(String name, Department department, Set<Subject> subjectSet) {
         this.name = name;
         this.department = department;
+        department.getProfessorSet().add(this); //== 연관관계 설정 ==//
         this.subjectSet = subjectSet;
     }
 }

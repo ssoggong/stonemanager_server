@@ -7,9 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "SCHEDULETAG")
 public class ScheduleTag {
     @Id
     @GeneratedValue
@@ -20,20 +19,25 @@ public class ScheduleTag {
 
     private Integer color;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @OneToMany(mappedBy = "scheduleTag", cascade = CascadeType.ALL)
     private Set<ScheduleScheduleTag> scheduleScheduleTagSet = new HashSet<>();
 
-    //== 연관관계 메서드 ==//
-    public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag){
-        scheduleScheduleTagSet.add(scheduleScheduleTag);
-        scheduleScheduleTag.setScheduleTag(this);
-    }
 
     //== 빌더 ==//
     @Builder
-    public ScheduleTag(String name, Integer color, Set<ScheduleScheduleTag> scheduleScheduleTagSet) {
+    public ScheduleTag(String name, Integer color, Project project, Set<ScheduleScheduleTag> scheduleScheduleTagSet) {
         this.name = name;
         this.color = color;
-        this.scheduleScheduleTagSet = scheduleScheduleTagSet;
+        this.project = project;
+        project.getScheduleTagSet().add(this); //== 연관관계 설정 ==//
+
+        for(ScheduleScheduleTag scheduleScheduleTag: scheduleScheduleTagSet) {
+            this.scheduleScheduleTagSet.add(scheduleScheduleTag);
+        }
+
     }
 }

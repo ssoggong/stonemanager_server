@@ -37,13 +37,14 @@ public class Schedule {
     @Builder
     public Schedule(Project project, Set<UserSchedule> userScheduleSet, Set<ScheduleScheduleTag> scheduleScheduleTagSet, String name, LocalDateTime date, String description) {
         this.project = project;
+        project.getScheduleSet().add(this);
 
         for(UserSchedule userSchedule: userScheduleSet) {
-            userScheduleSet.add(userSchedule);
+            this.userScheduleSet.add(userSchedule);
         }
 
         for(ScheduleScheduleTag scheduleScheduleTag: scheduleScheduleTagSet) {
-            scheduleScheduleTagSet.add(scheduleScheduleTag);
+            this.scheduleScheduleTagSet.add(scheduleScheduleTag);
         }
 
         this.name = name;

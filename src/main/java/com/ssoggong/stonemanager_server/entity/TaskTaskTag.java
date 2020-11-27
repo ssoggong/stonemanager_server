@@ -7,18 +7,17 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "TASK_TASKTAG")
 public class TaskTaskTag {
     @Id
     @GeneratedValue
     @Column(name = "task_taskTag_idx")
     private Long idx;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_idx")
     private Task task;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taskTag_idx")
     private TaskTag taskTag;
 
@@ -26,6 +25,8 @@ public class TaskTaskTag {
     @Builder
     public TaskTaskTag(Task task, TaskTag taskTag) {
         this.task = task;
+        task.getTaskTaskTagSet().add(this); //== 연관관계 설정 ==//
         this.taskTag = taskTag;
+        taskTag.getTaskTaskTagSet().add(this); //== 연관관계 설정 ==//
     }
 }
