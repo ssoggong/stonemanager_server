@@ -27,5 +27,7 @@ public class ScheduleScheduleTag {
     public ScheduleScheduleTag (Schedule schedule, ScheduleTag scheduleTag) {
         this.schedule = schedule;
         this.scheduleTag = scheduleTag;
+        //== 연관관계 설정 ==//
+        scheduleTag.getScheduleScheduleTagSet().add(this);
     }
 }
