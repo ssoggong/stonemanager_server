@@ -1,10 +1,9 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.project.DdayDto;
-import com.ssoggong.stonemanager_server.dto.project.ProjectDetailResponse;
-import com.ssoggong.stonemanager_server.dto.project.ProjectParticipateDto;
+import com.ssoggong.stonemanager_server.dto.project.*;
 import com.ssoggong.stonemanager_server.entity.*;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
+import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
 import com.ssoggong.stonemanager_server.util.Constants;
 import com.ssoggong.stonemanager_server.util.ParticipateCalculator;
@@ -29,8 +28,13 @@ public class ProjectService {
     public void saveProject(Project project) { projectRepository.save(project); }
 
 
-    public ProjectDetailResponse getProjectDetail(Long projectId){
+    public ProjectDetailResponse getProjectDetail(Long projectId, Long userId){
         Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        if(project.getProjectUserSet().stream()
+                .filter(projectUser -> projectUser.getUser().getIdx() == userId)
+                .collect(Collectors.toSet()).size() == 0){
+            throw new UserNotFoundException();
+        }
         ProjectDetailResponse projectDetailResponse = new ProjectDetailResponse(
                 project.getProjectName(), project.getTeamName(), project.getSubject().getName(),
                 project.getSubject().getProfessor().getName(),
@@ -77,5 +81,19 @@ public class ProjectService {
             dtos.add(DdayDto.of(task));
         }
         return dtos;
+    }
+
+    public ProjectMemberResponse readProjectMember(Long projectId, Long userId){
+        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        if(project.getProjectUserSet().stream()
+                .filter(projectUser -> projectUser.getUser().getIdx() == userId)
+                .collect(Collectors.toSet()).size() == 0){
+            throw new UserNotFoundException();
+        }
+        List<ProjectMemberDto> dtos = new ArrayList<>();
+        for(ProjectUser member: project.getProjectUserSet()){
+            dtos.add(ProjectMemberDto.of(member.getUser()));
+        }
+        return new ProjectMemberResponse(dtos);
     }
 }
