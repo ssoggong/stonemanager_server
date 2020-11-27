@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,31 +51,19 @@ public class ProjectService {
         return new ProgressCalaulator(totalTaskCount, doneTaskCount).getProgressRate();
     }
 
-    // TODO : 3중포문..filter로 줄여보거나..다른 알고리즘 생각해보
     public List<ProjectParticipateDto> getParticipateInfo(Project project){
         Set<ProjectUser> members = project.getProjectUserSet();
         Set<Task> tasks = project.getTaskSet();
-        boolean isComplete;
-        for(Task task: tasks){
-            isComplete = false;
-            for(TaskTaskTag taskTaskTag: task.getTaskTaskTagSet()){
-                if(taskTaskTag.getTaskTag().getIdx() == Constants.STATE_COMPLETE) isComplete = true;
-            }
-            if(!isComplete) tasks.remove(task);
-        }
+        tasks = tasks.stream().filter(task -> task.getState() == Constants.STATE_COMPLETE).collect(Collectors.toSet());
         Long totalDoneTask = 0L;
         for(Task task: tasks){
             totalDoneTask += task.getUserTaskSet().size();
         }
         List<ProjectParticipateDto> dtos = new ArrayList<>();
-        Long memberDoneTask;
-        for(ProjectUser user : members){
-            memberDoneTask = 0L;
-            for(Task task: tasks){
-                for(UserTask userTask: task.getUserTaskSet()){
-                    if(userTask.getUser().getIdx() == user.getUser().getIdx()) memberDoneTask++;
-                }
-            }
+        for(ProjectUser user:members){
+            Long memberDoneTask = (long) tasks.stream()
+                    .filter(task -> task.getUserTaskSet().contains(new UserTask(user.getUser(), task)))
+                    .collect(Collectors.toSet()).size();
             dtos.add(ProjectParticipateDto.of(user,
                     new ParticipateCalculator(totalDoneTask, memberDoneTask).getParticipateRate()));
         }
