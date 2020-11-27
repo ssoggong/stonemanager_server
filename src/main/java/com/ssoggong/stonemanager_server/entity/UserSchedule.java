@@ -21,12 +21,6 @@ public class UserSchedule {
     @JoinColumn(name = "schedule_idx")
     private Schedule schedule;
 
-    //== 연관관계 메서드 ==//
-    public void setSchedule(Schedule schedule){
-        this.schedule = schedule;
-        schedule.getUserScheduleSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public UserSchedule(User user, Schedule schedule) {

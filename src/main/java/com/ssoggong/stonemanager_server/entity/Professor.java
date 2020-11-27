@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "PROFESSOR")
 public class Professor {
     @Id
     @GeneratedValue
@@ -18,7 +17,7 @@ public class Professor {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_idx")
     private Department department;
 

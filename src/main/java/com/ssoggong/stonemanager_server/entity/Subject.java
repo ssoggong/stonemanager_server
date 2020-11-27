@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "SUBJECT")
 public class Subject {
     @Id
     @GeneratedValue
@@ -18,7 +17,7 @@ public class Subject {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor_idx")
     private Professor professor;
 
@@ -26,7 +25,7 @@ public class Subject {
 
     private String semester;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_idx")
     private Department department;
 
