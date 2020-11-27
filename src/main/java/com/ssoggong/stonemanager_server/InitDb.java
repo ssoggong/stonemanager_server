@@ -1,6 +1,7 @@
 package com.ssoggong.stonemanager_server;
 
 import com.ssoggong.stonemanager_server.entity.*;
+import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,6 +130,15 @@ public class InitDb {
             return projectUser;
         }
 
+        private ScheduleTag createScheduleTag(String name, Integer color) {
+            ScheduleTag scheduleTag = ScheduleTag.builder()
+                    .name(name)
+                    .color(color)
+                    .build();
+
+            return scheduleTag;
+        }
+
         private final EntityManager em;
         public void dbInit1(){
 
@@ -159,6 +169,11 @@ public class InitDb {
             em.persist(projectUser1);
             em.persist(projectUser2);
             em.persist(projectUser3);
+
+            ScheduleTag scheduleTag1 = createScheduleTag("scheduleTag1", 1);
+            ScheduleTag scheduleTag2 = createScheduleTag("scheduleTag2", 2);
+            em.persist(scheduleTag1);
+            em.persist(scheduleTag2);
         }
 
     }
