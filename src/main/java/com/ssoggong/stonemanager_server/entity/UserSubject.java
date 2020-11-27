@@ -25,6 +25,8 @@ public class UserSubject {
     @Builder
     public UserSubject(User user, Subject subject) {
         this.user = user;
+        user.getUserSubjectSet().add(this);
         this.subject = subject;
+        subject.getUserSubjectSet().add(this); //== 연관관계 설정 ==//
     }
 }

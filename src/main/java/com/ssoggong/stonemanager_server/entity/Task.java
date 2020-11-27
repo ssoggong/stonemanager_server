@@ -39,22 +39,12 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<TaskTaskTag> taskTaskTagSet = new HashSet<>();
 
-    //== 연관관계 메서드 ==//
-    public void addUserTask(UserTask userTask){
-        userTaskSet.add(userTask);
-        userTask.setTask(this);
-    }
-
-    public void addTaskTaskTag(TaskTaskTag taskTaskTag){
-        taskTaskTagSet.add(taskTaskTag);
-        taskTaskTag.setTask(this);
-    }
-
     //==빌더==//
     @Builder
     public Task(String name, String description, LocalDateTime deadline, Project project, Set<Comment> commentSet, Set<File> fileSet, Set<Checklist> checklistSet, Set<UserTask> userTaskSet, Set<TaskTaskTag> taskTaskTagSet) {
         this.name = name;
         this.project = project;
+        project.getTaskSet().add(this); //== 연관관계 설정 ==//
         this.description = description;
         this.deadline = deadline;
         this.commentSet = commentSet;

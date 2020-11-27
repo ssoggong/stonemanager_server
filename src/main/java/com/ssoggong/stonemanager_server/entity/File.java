@@ -19,16 +19,11 @@ public class File {
 
     private String name;
 
-    //== 연관관계 메서드 ==//
-    public void setTask(Task task){
-        this.task = task;
-        task.getFileSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public File(Task task, String name) {
         this.task = task;
+        task.getFileSet().add(this);
         this.name = name;
     }
 }

@@ -44,32 +44,6 @@ public class User {
 
     private String email;
 
-    //== 연관관계 메서드 ==//
-    public void addUserSubject(UserSubject userSubject){
-        userSubjectSet.add(userSubject);
-        userSubject.setUser(this);
-    }
-
-    public void addUserTask(UserTask userTask){
-        userTaskSet.add(userTask);
-        userTask.setUser(this);
-    }
-
-    public void addProjectUser(ProjectUser projectUser){
-        projectUserSet.add(projectUser);
-        projectUser.setUser(this);
-    }
-
-    public void addUserSchedule(UserSchedule userSchedule){
-        userScheduleSet.add(userSchedule);
-        userSchedule.setUser(this);
-    }
-
-    public void addComment(Comment comment){
-        commentSet.add(comment);
-        comment.setUser(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public User(Set<UserSubject> userSubjectSet, Set<ProjectUser> projectUserSet, Set<UserTask> userTaskSet, Set<UserSchedule> userScheduleSet, Set<Comment> commentSet,String name, String studentId, String pw, String salt, String image, String email) {
