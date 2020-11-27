@@ -1,9 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -33,6 +30,7 @@ public class TaskTag {
     }
 
     //==빌더==//
+    @Builder
     public TaskTag(String name, Integer color, Set<TaskTaskTag> taskTaskTagSet) {
         this.name = name;
         this.color = color;

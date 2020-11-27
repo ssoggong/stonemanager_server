@@ -1,9 +1,6 @@
 package com.ssoggong.stonemanager_server.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,7 +32,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Comment> commentSet = new HashSet<>();
 
-    private String id;
+    private String name;
+
+    private String studentId;
 
     private String pw;
 
@@ -72,13 +71,15 @@ public class User {
     }
 
     //== 빌더 ==//
-    public User(Set<UserSubject> userSubjectSet, Set<ProjectUser> projectUserSet, Set<UserTask> userTaskSet, Set<UserSchedule> userScheduleSet, Set<Comment> commentSet, String id, String pw, String salt, String image, String email) {
+    @Builder
+    public User(Set<UserSubject> userSubjectSet, Set<ProjectUser> projectUserSet, Set<UserTask> userTaskSet, Set<UserSchedule> userScheduleSet, Set<Comment> commentSet,String name, String studentId, String pw, String salt, String image, String email) {
         this.userSubjectSet = userSubjectSet;
         this.projectUserSet = projectUserSet;
         this.userTaskSet = userTaskSet;
         this.userScheduleSet = userScheduleSet;
         this.commentSet = commentSet;
-        this.id = id;
+        this.name = name;
+        this.studentId = studentId;
         this.pw = pw;
         this.salt = salt;
         this.image = image;
