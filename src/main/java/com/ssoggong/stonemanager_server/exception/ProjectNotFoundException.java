@@ -1,5 +1,8 @@
 package com.ssoggong.stonemanager_server.exception;
 
 public class ProjectNotFoundException extends RuntimeException {
-    public ProjectNotFoundException() { super("Invalid ProjectId Exception"); }
+    public ProjectNotFoundException(Long projectId) {
+        super("Invalid ProjectId Exception : " + projectId);
+        System.out.println(getMessage());
+    }
 }

@@ -1,5 +1,8 @@
 package com.ssoggong.stonemanager_server.exception;
 
 public class ScheduleNotFoundException extends RuntimeException{
-    public ScheduleNotFoundException() {super("Invalid ScheduleId Exception"); }
+    public ScheduleNotFoundException(Long scheduleId) {
+        super("Invalid ScheduleId Exception: " + scheduleId);
+        System.out.println(getMessage());
+    }
 }

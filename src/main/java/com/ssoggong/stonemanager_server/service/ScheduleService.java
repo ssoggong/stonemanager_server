@@ -36,7 +36,7 @@ public class ScheduleService {
 
     @Transactional
     public void createSchedule(Long userId, Long projectId, CreateScheduleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         List<Long> assigneeIdList =  request.getScheduleAssigneeIdList();
         List<Long> scheduleTagIdList = request.getScheduleTagIdList();
 
@@ -53,7 +53,7 @@ public class ScheduleService {
 
         //== userSchedule 생성 및 연관관계 설정 ==//
         for(Long assigneeId : assigneeIdList) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
             UserSchedule userSchedule = UserSchedule.builder()
                     .user(assignee)
                     .schedule(schedule)
@@ -62,7 +62,7 @@ public class ScheduleService {
 
         //== scheduleScheduleTag 생성 및 연관관계 설정 ==//
         for(Long scheduleTagId: scheduleTagIdList) {
-            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(() -> new ScheduleTagNotFoundException(scheduleTagId));
             ScheduleScheduleTag scheduleScheduleTag = ScheduleScheduleTag.builder()
                     .scheduleTag(scheduleTag)
                     .schedule(schedule)
@@ -73,8 +73,8 @@ public class ScheduleService {
     }
 
     public ReadScheduleListResponse readSchedule(Long userId, Long projectId, int year, int month) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
         List<Schedule> scheduleList = scheduleRepository.readScheduleByYearAndMonth(year, month, projectId);
 
         List<ReadScheduleListDto> dto = new ArrayList<>();
@@ -87,17 +87,17 @@ public class ScheduleService {
 
     @Transactional
     public void deleteSchedule(Long userId, Long projectId, Long scheduleId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
 
         scheduleRepository.deleteById(scheduleId);
     }
 
     public ReadScheduleDetailResponse readScheduleDetail(Long userId, Long projectId, Long scheduleId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
 
         ReadScheduleDetailDto dto = ReadScheduleDetailDto.of(schedule);
 
@@ -106,9 +106,9 @@ public class ScheduleService {
 
     @Transactional
     public void updateSchedule(Long userId, Long projectId, Long scheduleId, UpdateScheduleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(ScheduleNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
 
         schedule.setName(request.getScheduleName());
         schedule.setDate(request.getScheduleDate());
@@ -125,7 +125,7 @@ public class ScheduleService {
         }
 
         for(Long assigneeId: request.getScheduleAssigneeIdList()) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
             UserSchedule userSchedule = UserSchedule.builder()
                     .user(assignee)
                     .schedule(schedule)
@@ -134,7 +134,7 @@ public class ScheduleService {
 
         for(Long scheduleTagId: request.getScheduleTagIdList()) {
             System.out.println(scheduleTagId);
-            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(ScheduleTagNotFoundException::new);
+            ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(() -> new ScheduleTagNotFoundException(scheduleTagId));
             ScheduleScheduleTag scheduleScheduleTag = ScheduleScheduleTag.builder()
                     .scheduleTag(scheduleTag)
                     .schedule(schedule)

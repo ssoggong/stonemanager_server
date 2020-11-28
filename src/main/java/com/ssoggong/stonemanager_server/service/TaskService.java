@@ -5,6 +5,7 @@ import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.Task;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
+import com.ssoggong.stonemanager_server.exception.TaskNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
 import com.ssoggong.stonemanager_server.repository.TaskRepository;
@@ -29,12 +30,16 @@ public class TaskService {
 
     @Transactional
     public CreateTaskResponse createTask(Long userId, Long projectId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
         Task task = Task.builder()
                 .project(project)
                 .build();
         Long taskId = taskRepository.save(task).getIdx();
         return new CreateTaskResponse(taskId);
+    }
+
+    public Task findById(Long taskId){
+        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 }
