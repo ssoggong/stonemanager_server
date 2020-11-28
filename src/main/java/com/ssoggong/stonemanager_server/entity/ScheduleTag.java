@@ -20,7 +20,7 @@ public class ScheduleTag {
     private Integer color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_idx")
     private Project project;
 
     @OneToMany(mappedBy = "scheduleTag", cascade = CascadeType.ALL)
