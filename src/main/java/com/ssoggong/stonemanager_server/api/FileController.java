@@ -28,7 +28,9 @@ public class FileController {
                                             @RequestHeader("taskIndex") Long taskId,
                                             @RequestBody AddFileRequest addFileRequest){
         userService.findById(userId);
+        // TODO 해당 유저가 프로젝트의 멤버인지 검증
         projectService.findById(projectId);
+        // TODO 해당 프로젝트와 태스크가 연결되었는지
         fileService.createFile(addFileRequest, taskService.findById(taskId));
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FILE);
         return new ResponseEntity<>(message, HttpStatus.OK);
