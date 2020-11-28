@@ -21,8 +21,5 @@ public class UpdateTaskRequest {
     private LocalDateTime taskDueDate;
     private List<Long> taskTagIdList;
     private String taskDescription;
-    private List<Long> checklistIdList;
-    private List<Long> fileIdList;
-    private List<Long> commentIdList;
     private Integer taskState;
 }
