@@ -15,24 +15,22 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionController {
+public class NotFoundExceptionController {
     @ExceptionHandler({
             UserNotFoundException.class,
             ProjectNotFoundException.class,
             NotFoundException.class,
             ScheduleTagNotFoundException.class,
             ScheduleNotFoundException.class,
-            ScheduleNotFoundException.class,
             TaskNotFoundException.class,
-            TaskNotFoundException.class,
+            CommentNotFoundException.class,
+            MultipleNotFoundException.class,
             TaskTagNotFoundException.class,
             ChecklistNotFoundException.class,
-            CommentNotFoundException.class,
             FileNotFoundException.class,
-            TaskNotFoundException.class
     })
 
-    public ResponseEntity<Message> BadRequestException(final RuntimeException exception){
+    public ResponseEntity<Message> BadRequestException(final NotFoundException exception){
         Message message = new Message(400, ResponseMessage.NOT_FOUNT_VALUE);
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }

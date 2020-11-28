@@ -18,6 +18,7 @@ public class FileService {
     @Transactional
     public void saveFile(File file) { fileRepository.save(file);}
 
+    @Transactional
     public void createFile(AddFileRequest addFileRequest, Task task){
         File file = File.builder()
                 .task(task)

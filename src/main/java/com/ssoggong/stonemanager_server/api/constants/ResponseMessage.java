@@ -60,6 +60,7 @@ public class ResponseMessage {
     public static final String NOT_FOUND_SCHEDULE = "Invalid scheduleIndex";
     public static final String NOT_FOUND_TASK = "Invalid taskIndex";
     public static final String NOT_FOUNT_VALUE = "Not Found Value";
+    public static final String UNAUTHORIZED_ACCESS = "Unauthorized Access";
 
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 }
