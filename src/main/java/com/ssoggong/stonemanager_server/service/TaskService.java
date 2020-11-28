@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +31,7 @@ public class TaskService {
 
     @Transactional
     public CreateTaskResponse createTask(Long userId, Long projectId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
         Task task = Task.builder()
                 .project(project)
@@ -41,5 +42,14 @@ public class TaskService {
 
     public Task findById(Long taskId){
         return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    }
+
+    public Task findByProjectAndTask(Project project, Long taskId){
+        if(project.getTaskSet().stream()
+                .filter(task -> task.getIdx() == taskId)
+                .collect(Collectors.toSet()).size() == 1){
+            return findById(taskId);
+        }
+        else throw new TaskNotFoundException(taskId);
     }
 }

@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.project.*;
 import com.ssoggong.stonemanager_server.entity.*;
+import com.ssoggong.stonemanager_server.exception.NotFoundException;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
@@ -30,6 +31,16 @@ public class ProjectService {
 
     public Project findById(Long projectId) {
         return projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    }
+
+    public Project findByUserAndProject(Long userId, Long projectId){
+        Project project = findById(projectId);
+        if(project.getProjectUserSet().stream()
+                .filter(projectUser -> projectUser.getUser().getIdx() == userId)
+                .collect(Collectors.toSet()).size() == 0){
+            throw new ProjectNotFoundException(projectId);
+        }
+        return project;
     }
 
     public ProjectDetailResponse getProjectDetail(Long projectId, Long userId){
