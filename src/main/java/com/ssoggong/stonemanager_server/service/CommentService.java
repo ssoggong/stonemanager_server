@@ -1,10 +1,14 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.entity.Comment;
+import com.ssoggong.stonemanager_server.entity.Task;
+import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @Transactional(readOnly = true)
@@ -15,5 +19,16 @@ public class CommentService {
 
     @Transactional
     public void saveComment(Comment comment) { commentRepository.save(comment); }
+
+    @Transactional
+    public void createComment(String content, User user, Task task){
+        Comment comment = Comment.builder()
+                .content(content)
+                .createdDate(LocalDateTime.now())
+                .task(task)
+                .user(user)
+                .build();
+        saveComment(comment);
+    }
 
 }
