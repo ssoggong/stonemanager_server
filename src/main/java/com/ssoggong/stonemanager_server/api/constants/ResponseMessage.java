@@ -9,6 +9,7 @@ public class ResponseMessage {
     public static final String LOGIN = "로그인 성공";
     public static final String UPDATE_PASSWORD = "비밀번호 변경 성공";
     public static final String READ_USER_INFO = "내 정보 조회 성공";
+    public static final String READ_USER_SUBJECT = "수강 과목 조회 성공";
 
     public static final String CREATE_PROJECT_USER = "팀원 초대 성공";
     public static final String READ_PROJECT_USER = "팀원 조회 성공";

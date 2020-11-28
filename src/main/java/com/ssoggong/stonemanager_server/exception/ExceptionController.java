@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.entity.TaskTag;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -27,9 +29,11 @@ public class ExceptionController {
             ChecklistNotFoundException.class,
             CommentNotFoundException.class,
             FileNotFoundException.class
+            TaskNotFoundException.class
     })
-    public HttpEntity<Message> BadRequestException(final RuntimeException exception){
+
+    public ResponseEntity<Message> BadRequestException(final RuntimeException exception){
         Message message = new Message(400, ResponseMessage.NOT_FOUNT_VALUE);
-        return new HttpEntity<>(message);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 }

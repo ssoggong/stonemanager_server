@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,13 +28,16 @@ public class ProjectService {
     @Transactional
     public void saveProject(Project project) { projectRepository.save(project); }
 
+    public Project findById(Long projectId) {
+        return projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    }
 
     public ProjectDetailResponse getProjectDetail(Long projectId, Long userId){
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        Project project = findById(projectId);
         if(project.getProjectUserSet().stream()
                 .filter(projectUser -> projectUser.getUser().getIdx() == userId)
                 .collect(Collectors.toSet()).size() == 0){
-            throw new UserNotFoundException();
+            throw new UserNotFoundException(userId);
         }
         ProjectDetailResponse projectDetailResponse = new ProjectDetailResponse(
                 project.getProjectName(), project.getTeamName(), project.getSubject().getName(),
@@ -84,11 +88,11 @@ public class ProjectService {
     }
 
     public ProjectMemberResponse readProjectMember(Long projectId, Long userId){
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
         if(project.getProjectUserSet().stream()
                 .filter(projectUser -> projectUser.getUser().getIdx() == userId)
                 .collect(Collectors.toSet()).size() == 0){
-            throw new UserNotFoundException();
+            throw new UserNotFoundException(userId);
         }
         List<ProjectMemberDto> dtos = new ArrayList<>();
         for(ProjectUser member: project.getProjectUserSet()){
