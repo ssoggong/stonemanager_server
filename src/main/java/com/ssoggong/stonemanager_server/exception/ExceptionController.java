@@ -4,6 +4,11 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.entity.TaskTag;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -14,7 +19,14 @@ public class ExceptionController {
             ProjectNotFoundException.class,
             NotFoundException.class,
             ScheduleTagNotFoundException.class,
-            ScheduleNotFoundException.class
+            ScheduleNotFoundException.class,
+            ScheduleNotFoundException.class,
+            TaskNotFoundException.class,
+            TaskNotFoundException.class,
+            TaskTagNotFoundException.class,
+            ChecklistNotFoundException.class,
+            CommentNotFoundException.class,
+            FileNotFoundException.class
     })
     public HttpEntity<Message> BadRequestException(final RuntimeException exception){
         Message message = new Message(400, ResponseMessage.NOT_FOUNT_VALUE);
