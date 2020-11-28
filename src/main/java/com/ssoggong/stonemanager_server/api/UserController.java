@@ -22,4 +22,10 @@ public class UserController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_USER_INFO, userService.readUserInfo(userId));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @GetMapping("/subject")
+    public ResponseEntity<Message> readUserSubject(@RequestHeader("userIndex") Long userId){
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_USER_SUBJECT, userService.readUserSubject(userId));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
