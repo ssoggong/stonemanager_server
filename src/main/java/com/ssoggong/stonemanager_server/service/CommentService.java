@@ -31,4 +31,9 @@ public class CommentService {
         saveComment(comment);
     }
 
+    @Transactional
+    public void updateComment(Long commentId, String content, User user, Task task){
+        // TODO 작성자와 동일한지
+    }
+
 }
