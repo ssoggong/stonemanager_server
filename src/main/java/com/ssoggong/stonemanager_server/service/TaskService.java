@@ -58,6 +58,7 @@ public class TaskService {
         return new CreateTaskResponse(taskId);
     }
 
+    @Transactional
     public void updateTask(Long userId, Long projectId, Long taskId, UpdateTaskRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
@@ -94,8 +95,18 @@ public class TaskService {
         }
         saveTask(task);
     }
-  
+
+    @Transactional
+    public void deleteTask(Long userId, Long projectId, Long taskId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        taskRepository.delete(task);
+    }
+
     public Task findById(Long taskId){
         return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
     }
+
 }

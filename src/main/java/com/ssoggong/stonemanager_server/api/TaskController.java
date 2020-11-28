@@ -31,9 +31,15 @@ public class TaskController {
 
     @PutMapping("{taskIndex}")
     public ResponseEntity<Message> updateTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("taskIndex") Long taskId, @RequestBody UpdateTaskRequest request) {
-        Checklist checklist = checklistRepository.findById(26L).orElseThrow(() -> new ChecklistNotFoundException(26L));
         taskService.updateTask(userId, projectId, taskId, request);
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_TASK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Message> deleteTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @RequestHeader("taskIndex") Long taskId) {
+        taskService.deleteTask(userId, projectId, taskId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_TASK);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
