@@ -26,4 +26,9 @@ public class FileService {
                 .build();
         saveFile(file);
     }
+
+    @Transactional
+    public void deleteFile(Long fileId){
+        fileRepository.deleteById(fileId);
+    }
 }
