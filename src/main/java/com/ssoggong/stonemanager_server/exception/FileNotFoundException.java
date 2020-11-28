@@ -1,5 +1,8 @@
 package com.ssoggong.stonemanager_server.exception;
 
 public class FileNotFoundException extends RuntimeException {
-    public FileNotFoundException() { super("Invalid FileId Exception"); }
+    public FileNotFoundException(Long fileId){
+        super("Invalid fileId Exception : " + fileId);
+        System.out.println(getMessage());
+    }
 }

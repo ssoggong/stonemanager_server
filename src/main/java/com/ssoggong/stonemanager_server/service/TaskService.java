@@ -58,14 +58,10 @@ public class TaskService {
         return new CreateTaskResponse(taskId);
     }
 
-    public Task findById(Long taskId) {
-        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
-    }
-
     public void updateTask(Long userId, Long projectId, Long taskId, UpdateTaskRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Project project = projectRepository.findById(projectId).orElseThrow(ProjectNotFoundException::new);
-        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
 
         for(TaskTaskTag taskTaskTag: task.getTaskTaskTagSet()) {
             taskTaskTag.setTask(null);
@@ -75,18 +71,6 @@ public class TaskService {
             userTask.setTask(null);
             userTaskRepository.delete(userTask);
         }
-        for(File file: task.getFileSet()) {
-            file.setTask(null);
-            fileRepository.delete(file);
-        }
-        for(Comment comment: task.getCommentSet()) {
-            comment.setTask(null);
-            commentRepository.delete(comment);
-        }
-        for(Checklist checklist: task.getChecklistSet()) {
-            checklist.setTask(null);
-            checklistRepository.delete(checklist);
-        }
 
         task.setName(request.getTaskName());
         task.setDeadline(request.getTaskDueDate());
@@ -94,7 +78,7 @@ public class TaskService {
         task.setState(request.getTaskState());
 
         for(Long taskTagId: request.getTaskTagIdList()) {
-            TaskTag taskTag = taskTagRepository.findById(taskTagId).orElseThrow(TaskTagNotFoundException::new);
+            TaskTag taskTag = taskTagRepository.findById(taskTagId).orElseThrow(() -> new TaskTagNotFoundException(taskTagId));
             TaskTaskTag taskTaskTag = TaskTaskTag.builder()
                     .task(task)
                     .taskTag(taskTag)
@@ -102,31 +86,12 @@ public class TaskService {
         }
 
         for(Long assigneeId: request.getTaskAssigneeIdList()) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(UserNotFoundException::new);
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
             UserTask userTask = UserTask.builder()
                     .task(task)
                     .user(assignee)
                     .build();
         }
-
-        for(Long commentId: request.getCommentIdList()) {
-            Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-            comment.setTask(task);
-            task.getCommentSet().add(comment);
-        }
-
-        for(Long checklistId: request.getChecklistIdList()) {
-            Checklist checklist = checklistRepository.findById(checklistId).orElseThrow(ChecklistNotFoundException::new);
-            checklist.setTask(task);
-            task.getChecklistSet().add(checklist);
-        }
-
-        for(Long fileId: request.getFileIdList()) {
-            File file = fileRepository.findById(fileId).orElseThrow(FileNotFoundException::new);
-            file.setTask(task);
-            task.getFileSet().add(file);
-        }
-
         saveTask(task);
     }
   

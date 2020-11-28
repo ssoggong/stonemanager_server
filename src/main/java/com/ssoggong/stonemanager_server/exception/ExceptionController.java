@@ -28,7 +28,7 @@ public class ExceptionController {
             TaskTagNotFoundException.class,
             ChecklistNotFoundException.class,
             CommentNotFoundException.class,
-            FileNotFoundException.class
+            FileNotFoundException.class,
             TaskNotFoundException.class
     })
 
