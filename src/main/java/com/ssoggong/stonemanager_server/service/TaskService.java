@@ -1,6 +1,9 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskList_taskDto;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.Task;
 import com.ssoggong.stonemanager_server.entity.User;
@@ -18,7 +21,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -103,6 +108,19 @@ public class TaskService {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
 
         taskRepository.delete(task);
+    }
+
+    public ReadTaskListResponse readTaskList(Long userId, Long projectId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
+        for(Task task: project.getTaskSet()) {
+            ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
+            taskDtoList.add(taskDto);
+        }
+
+        return new ReadTaskListResponse(taskDtoList);
     }
 
     public Task findById(Long taskId){

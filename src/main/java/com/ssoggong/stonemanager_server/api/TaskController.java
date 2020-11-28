@@ -4,6 +4,8 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
+import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
 import com.ssoggong.stonemanager_server.dto.task.UpdateTaskRequest;
 import com.ssoggong.stonemanager_server.entity.Checklist;
 import com.ssoggong.stonemanager_server.exception.ChecklistNotFoundException;
@@ -40,6 +42,13 @@ public class TaskController {
     public ResponseEntity<Message> deleteTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @RequestHeader("taskIndex") Long taskId) {
         taskService.deleteTask(userId, projectId, taskId);
         Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_TASK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Message> readTaskList(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId) {
+        ReadTaskListResponse response = taskService.readTaskList(userId, projectId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_TASK_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
