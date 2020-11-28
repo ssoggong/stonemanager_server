@@ -2,6 +2,6 @@ package com.ssoggong.stonemanager_server.exception;
 
 public class ScheduleNotFoundException extends NotFoundException{
     public ScheduleNotFoundException(Long scheduleId) {
-        super(scheduleId.toString());
+        super(" scheduleId : " + scheduleId.toString());
     }
 }

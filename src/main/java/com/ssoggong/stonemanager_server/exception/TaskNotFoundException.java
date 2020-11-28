@@ -2,6 +2,6 @@ package com.ssoggong.stonemanager_server.exception;
 
 public class TaskNotFoundException extends NotFoundException {
     public TaskNotFoundException(Long taskId){
-        super(taskId.toString());
+        super("taskId : " + taskId.toString());
     }
 }

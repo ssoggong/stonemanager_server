@@ -38,14 +38,17 @@ public class CommentController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    @PutMapping("/{commentIndex}")
-//    public ResponseEntity<Message> updateComment(@RequestHeader("userIndex") Long userId,
-//                                                 @RequestHeader("projectIndex") Long projectId,
-//                                                 @RequestHeader("taskIndex") Long taskId,
-//                                                 @PathVariable Long commentIndex,
-//                                                 @RequestBody CommentRequest commentRequest){
-//        User user = userService.findById(userId);
-//        Project project = projectService.findByUserAndProject(userId, projectId);
-//        Task task = taskService.findByProjectAndTask(project, taskId);
-//    }
+    @PutMapping("/{commentIndex}")
+    public ResponseEntity<Message> updateComment(@RequestHeader("userIndex") Long userId,
+                                                 @RequestHeader("projectIndex") Long projectId,
+                                                 @RequestHeader("taskIndex") Long taskId,
+                                                 @PathVariable Long commentIndex,
+                                                 @RequestBody CommentRequest commentRequest){
+        userService.findById(userId);
+        Project project = projectService.findByUserAndProject(userId, projectId);
+        taskService.findByProjectAndTask(project, taskId);
+        commentService.updateComment(commentIndex, commentRequest.getContent(), userId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_COMMENT);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

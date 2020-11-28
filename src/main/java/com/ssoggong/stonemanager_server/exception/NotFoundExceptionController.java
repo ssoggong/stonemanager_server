@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionController {
+public class NotFoundExceptionController {
     @ExceptionHandler({
             UserNotFoundException.class,
             ProjectNotFoundException.class,
@@ -18,17 +18,12 @@ public class ExceptionController {
             ScheduleTagNotFoundException.class,
             ScheduleNotFoundException.class,
             TaskNotFoundException.class,
-            MultipleNotFoundException.class,
-            UnauthorizedUserException.class
+            CommentNotFoundException.class,
+            MultipleNotFoundException.class
     })
 
     public ResponseEntity<Message> BadRequestException(final NotFoundException exception){
         Message message = new Message(400, ResponseMessage.NOT_FOUNT_VALUE);
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-    }
-
-    public ResponseEntity<Message> BadRequestException(final UnauthorizedException exception){
-        Message message = new Message(400, ResponseMessage.UNAUTHORIZED_ACCESS);
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 }

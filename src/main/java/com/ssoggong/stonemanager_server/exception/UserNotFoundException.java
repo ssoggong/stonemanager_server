@@ -2,6 +2,6 @@ package com.ssoggong.stonemanager_server.exception;
 
 public class UserNotFoundException extends NotFoundException{
     public UserNotFoundException(Long userId) {
-        super(userId.toString());
+        super("userId : " + userId.toString());
     }
 }
