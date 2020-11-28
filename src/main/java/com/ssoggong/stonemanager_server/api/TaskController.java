@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
+import com.ssoggong.stonemanager_server.dto.task.UpdateTaskRequest;
 import com.ssoggong.stonemanager_server.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,13 @@ public class TaskController {
     public ResponseEntity<Message> createTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId)  {
         CreateTaskResponse response = taskService.createTask(userId, projectId);
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_TASK, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PutMapping("{taskIndex}")
+    public ResponseEntity<Message> updateTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("taskIndex") Long taskId, @RequestBody UpdateTaskRequest request) {
+        taskService.updateTask(userId, projectId, taskId, request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_TASK);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

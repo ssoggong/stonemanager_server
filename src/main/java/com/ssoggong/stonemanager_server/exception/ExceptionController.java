@@ -2,6 +2,13 @@ package com.ssoggong.stonemanager_server.exception;
 
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
+import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.entity.TaskTag;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +22,13 @@ public class ExceptionController {
             NotFoundException.class,
             ScheduleTagNotFoundException.class,
             ScheduleNotFoundException.class,
+            ScheduleNotFoundException.class,
+            TaskNotFoundException.class,
+            TaskNotFoundException.class,
+            TaskTagNotFoundException.class,
+            ChecklistNotFoundException.class,
+            CommentNotFoundException.class,
+            FileNotFoundException.class
             TaskNotFoundException.class
     })
 

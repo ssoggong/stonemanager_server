@@ -1,8 +1,25 @@
+#spring:
+#  datasource:
+#    url: jdbc:mysql://database-ssoggong.cigdnmxkdvki.ap-northeast-2.rds.amazonaws.com:3306/ssoggong?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: admin
+#    password: sm5fwbWzREdU5hmmr2WG
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+#    open-in-view: false
+#    show-sql: true
+#    hibernate:
+#      format_sql: true
+#      ddl-auto: create
+#    properties:
+#      hibernate.enable_lazy_load_no_trans: true
+
 spring:
   datasource:
-    url: jdbc:mysql://database-ssoggong.cigdnmxkdvki.ap-northeast-2.rds.amazonaws.com:3306/ssoggong?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://database-local.cigdnmxkdvki.ap-northeast-2.rds.amazonaws.com:3306/ssoggong?serverTimezone=UTC&characterEncoding=UTF-8
     username: admin
-    password: sm5fwbWzREdU5hmmr2WG
+    password: sFo3Gx00NaMxs2LdaJwD
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

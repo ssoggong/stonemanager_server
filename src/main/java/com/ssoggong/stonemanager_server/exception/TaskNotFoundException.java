@@ -5,4 +5,5 @@ public class TaskNotFoundException extends RuntimeException {
         super("Invalid TaskId Exception : " +taskId);
         System.out.println(getMessage());
     }
+    public TaskNotFoundException() { super("Invalid TaskId Exception"); }
 }

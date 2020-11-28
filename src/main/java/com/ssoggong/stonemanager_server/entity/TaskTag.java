@@ -20,7 +20,7 @@ public class TaskTag {
     private Integer color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_idx")
     private Project project;
 
     @OneToMany(mappedBy = "taskTag", cascade = CascadeType.ALL)
