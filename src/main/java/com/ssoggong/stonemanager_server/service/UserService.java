@@ -5,8 +5,11 @@ import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
+import com.ssoggong.stonemanager_server.dto.user.UserSubjectDto;
+import com.ssoggong.stonemanager_server.dto.user.UserSubjectResponse;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
+import com.ssoggong.stonemanager_server.entity.UserSubject;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +56,16 @@ public class UserService {
     public UserInfoResponse readUserInfo(Long userId){
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return new UserInfoResponse(user.getName(), user.getStudentId(), user.getEmail(), user.getEmail());
+    }
+
+    public UserSubjectResponse readUserSubject(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<UserSubjectDto> dtos = new ArrayList<>();
+        for(UserSubject userSubject : user.getUserSubjectSet()){
+            if(userSubject.getUser().getIdx() == userId){
+                dtos.add(UserSubjectDto.of(userSubject.getSubject()));
+            }
+        }
+        return new UserSubjectResponse(dtos);
     }
 }
