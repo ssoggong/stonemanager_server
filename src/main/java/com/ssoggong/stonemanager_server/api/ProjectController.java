@@ -3,21 +3,17 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
-import com.ssoggong.stonemanager_server.dto.project.CreateProjectRequest;
-import com.ssoggong.stonemanager_server.dto.project.ProjectDetailResponse;
-import com.ssoggong.stonemanager_server.dto.project.ProjectMemberResponse;
-import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
+import com.ssoggong.stonemanager_server.dto.project.*;
 import com.ssoggong.stonemanager_server.entity.Subject;
 import com.ssoggong.stonemanager_server.entity.User;
-import com.ssoggong.stonemanager_server.service.ProjectService;
-import com.ssoggong.stonemanager_server.service.ProjectUserService;
-import com.ssoggong.stonemanager_server.service.UserService;
-import com.ssoggong.stonemanager_server.service.UserSubjectService;
+import com.ssoggong.stonemanager_server.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -26,7 +22,8 @@ public class ProjectController {
     private final UserService userService;
     private final ProjectService projectService;
     private final ProjectUserService projectUserService;
-    private final UserSubjectService userSubjectService;
+    private final SubjectService subjectService;
+
 
     @GetMapping
     public ResponseEntity<Message> readProjectList(@RequestHeader("userIndex") Long userId) {
@@ -70,6 +67,17 @@ public class ProjectController {
                                                      @RequestHeader("userIndex") Long userIndex) {
         ProjectMemberResponse response = projectService.readProjectMember(projectIndex, userIndex);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT_USER, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/students")
+    public ResponseEntity<Message> readStudent(@RequestHeader("userIndex") Long userId,
+                                               @RequestHeader("subjectIndex") Long subjectId,
+                                               @RequestBody String name){
+        userService.findById(userId);
+        Subject subject = userService.findSubjectByUserAndSubject(userId, subjectId);
+        List<FindStudentDto> response = subjectService.findUser(subjectId, name);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_SUBJECT_STUDENT, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
