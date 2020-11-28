@@ -21,6 +21,7 @@ public class FileController {
     private final TaskService taskService;
     private final UserService userService;
     private final ProjectService projectService;
+
     @PostMapping
     public ResponseEntity<Message> postFile(@RequestHeader("userIndex") Long userId,
                                             @RequestHeader("projectIndex") Long projectId,
@@ -30,6 +31,19 @@ public class FileController {
         projectService.findById(projectId);
         fileService.createFile(addFileRequest, taskService.findById(taskId));
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FILE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{fileIndex}")
+    public ResponseEntity<Message> deleteFIle(@RequestHeader("userIndex") Long userId,
+                                              @RequestHeader("projectIndex") Long projectId,
+                                              @RequestHeader("taskIndex") Long taskId,
+                                              @PathVariable Long fileIndex){
+        userService.findById(userId);
+        projectService.findById(projectId);
+        taskService.findById(taskId);
+        fileService.deleteFile(fileIndex);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_FILE);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
