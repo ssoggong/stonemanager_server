@@ -8,8 +8,10 @@ import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserSubjectDto;
 import com.ssoggong.stonemanager_server.dto.user.UserSubjectResponse;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
+import com.ssoggong.stonemanager_server.entity.Subject;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.entity.UserSubject;
+import com.ssoggong.stonemanager_server.exception.MultipleNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,6 +35,16 @@ public class UserService {
     public void saveUser(User user) { userRepository.save(user); }
 
     public User findById(Long userId) { return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)); }
+
+    public Subject findSubjectByUserAndSubject(Long userId, Long subjectId){
+        User user = findById(userId);
+        System.out.println(user.getUserSubjectSet().size());
+        List<UserSubject> userSubjects = user.getUserSubjectSet().stream()
+                .filter(userSubject -> userSubject.getSubject().getIdx() == subjectId)
+                .collect(Collectors.toList());
+        if(userSubjects.size() != 1) throw new MultipleNotFoundException();
+        return userSubjects.get(0).getSubject();
+    }
 
     public ReadProjectListResponse ReadProjectList(Long userId) {
         User user = findById(userId);
