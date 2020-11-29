@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTaskTagRequest {
+public class TaskTagRequest {
     private String tagName;
     private Integer tagColor;
 }
