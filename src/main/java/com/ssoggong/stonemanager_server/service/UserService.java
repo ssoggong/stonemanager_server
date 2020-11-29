@@ -104,9 +104,18 @@ public class UserService {
         return new UserResponse(user.getIdx());
     }
 
+    @Transactional
     public UserResponse userLogin(LoginRequest request){
         User user = userRepository.findByStudentId(request.getUserId()).orElseThrow(() -> new UserNotFoundException(-1L));
         if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
         return new UserResponse(user.getIdx());
+    }
+
+    @Transactional
+    public void updatePassword(UpdatePasswordRequest request, Long userId){
+        User user = findById(userId);
+        if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
+        user.setPw(request.getNewPassword());
+        saveUser(user);
     }
 }

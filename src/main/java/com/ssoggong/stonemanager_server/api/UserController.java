@@ -3,10 +3,7 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
-import com.ssoggong.stonemanager_server.dto.user.LoginRequest;
-import com.ssoggong.stonemanager_server.dto.user.RegisterUserRequest;
-import com.ssoggong.stonemanager_server.dto.user.UserResponse;
-import com.ssoggong.stonemanager_server.dto.user.UserProfileDto;
+import com.ssoggong.stonemanager_server.dto.user.*;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,6 +46,14 @@ public class UserController {
     public ResponseEntity<Message> userLogin(@RequestBody LoginRequest request){
         UserResponse response = userService.userLogin(request);
         Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<Message> updatePassword(@RequestHeader("userIndex") Long userId,
+                                                  @RequestBody UpdatePasswordRequest request){
+        userService.updatePassword(request, userId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_PASSWORD);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
