@@ -83,4 +83,11 @@ public class UserService {
         }
         return new UserSubjectResponse(dtos);
     }
+
+    @Transactional
+    public void updateProfileImage(Long userId, String imageUri){
+        User user = findById(userId);
+        user.setImage(imageUri);
+        userRepository.save(user);
+    }
 }

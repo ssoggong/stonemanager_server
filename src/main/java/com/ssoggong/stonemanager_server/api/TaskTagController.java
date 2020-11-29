@@ -47,7 +47,7 @@ public class TaskTagController {
         Project project = projectService.findByUserAndProject(userId, projectId);
         taskService.findByProjectAndTask(project, taskId);
         taskTagService.updateTaskTag(request, tagIndex);
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_TASK_TAG);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_TASK_TAG);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -60,7 +60,7 @@ public class TaskTagController {
         Project project = projectService.findByUserAndProject(userId, projectId);
         taskService.findByProjectAndTask(project, taskId);
         taskTagService.deleteTaskTag(tagIndex);
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_TASK_TAG);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_TASK_TAG);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -70,7 +70,7 @@ public class TaskTagController {
         userService.findById(userId);
         projectService.findByUserAndProject(userId, projectId);
         TagResponse response = projectService.readTaskTags(projectId);
-        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_TASK_TAG, response);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_TASK_TAG_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
