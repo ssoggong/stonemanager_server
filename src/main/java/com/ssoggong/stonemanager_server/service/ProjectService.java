@@ -1,6 +1,8 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.project.*;
+import com.ssoggong.stonemanager_server.dto.tag.TagDto;
+import com.ssoggong.stonemanager_server.dto.tag.TagResponse;
 import com.ssoggong.stonemanager_server.entity.*;
 import com.ssoggong.stonemanager_server.exception.*;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
@@ -126,5 +128,14 @@ public class ProjectService {
         project.setTeamName(request.getProjectTeam());
         project.setProjectName(request.getProjectName());
         saveProject(project);
+    }
+
+    public TagResponse readTaskTags(Long projectId){
+        Project project = findById(projectId);
+        List<TagDto> dtos = new ArrayList<>();
+        for(TaskTag tag : project.getTaskTagSet()){
+            dtos.add(TagDto.of(tag));
+        }
+        return new TagResponse(dtos);
     }
 }

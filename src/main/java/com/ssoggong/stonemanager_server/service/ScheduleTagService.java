@@ -1,14 +1,11 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.scheduleTag.CreateScheduleTagRequest;
-import com.ssoggong.stonemanager_server.dto.scheduleTag.ReadScheduleTagDto;
-import com.ssoggong.stonemanager_server.dto.scheduleTag.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.tag.TagRequest;
+import com.ssoggong.stonemanager_server.dto.tag.TagDto;
+import com.ssoggong.stonemanager_server.dto.tag.TagResponse;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ScheduleTag;
-import com.ssoggong.stonemanager_server.entity.User;
-import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
 import com.ssoggong.stonemanager_server.exception.ScheduleTagNotFoundException;
-import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
 import com.ssoggong.stonemanager_server.repository.ScheduleTagRepository;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
@@ -37,7 +34,7 @@ public class ScheduleTagService {
     }
 
     @Transactional
-    public void createScheduleTag(CreateScheduleTagRequest request) {
+    public void createScheduleTag(TagRequest request) {
         ScheduleTag scheduleTag = ScheduleTag.builder()
                 .name(request.getTagName())
                 .color(request.getTagColor())
@@ -47,18 +44,18 @@ public class ScheduleTagService {
         saveScheduleTag(scheduleTag);
     }
 
-    public ReadScheduleTagResponse readScheduleTag(Project project) {
+    public TagResponse readScheduleTag(Project project) {
         Set<ScheduleTag> scheduleTagList = project.getScheduleTagSet();
 
-        List<ReadScheduleTagDto> dto = new ArrayList<>();
+        List<TagDto> dto = new ArrayList<>();
         for(ScheduleTag scheduleTag: scheduleTagList) {
-            dto.add(ReadScheduleTagDto.of(scheduleTag));
+            dto.add(TagDto.of(scheduleTag));
         }
-        return new ReadScheduleTagResponse(dto);
+        return new TagResponse(dto);
     }
 
     @Transactional
-    public void updateScheduleTag(ScheduleTag scheduleTag, CreateScheduleTagRequest request) {
+    public void updateScheduleTag(ScheduleTag scheduleTag, TagRequest request) {
 
         scheduleTag.setName(request.getTagName());
         scheduleTag.setColor(request.getTagColor());
