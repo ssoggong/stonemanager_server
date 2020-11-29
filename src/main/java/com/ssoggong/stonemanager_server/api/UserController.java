@@ -3,8 +3,9 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.dto.user.LoginRequest;
 import com.ssoggong.stonemanager_server.dto.user.RegisterUserRequest;
-import com.ssoggong.stonemanager_server.dto.user.RegisterUserResponse;
+import com.ssoggong.stonemanager_server.dto.user.UserResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserProfileDto;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
@@ -39,8 +40,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Message> registerUser(@RequestBody RegisterUserRequest request){
-        RegisterUserResponse response = userService.createUser(request);
+        UserResponse response = userService.createUser(request);
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_USER, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Message> userLogin(@RequestBody LoginRequest request){
+        UserResponse response = userService.userLogin(request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

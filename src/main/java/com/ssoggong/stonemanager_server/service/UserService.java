@@ -12,6 +12,7 @@ import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.entity.UserSubject;
 import com.ssoggong.stonemanager_server.exception.MultipleNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
+import com.ssoggong.stonemanager_server.exception.WrongPasswordException;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class UserService {
     }
 
     @Transactional
-    public RegisterUserResponse createUser(RegisterUserRequest request){
+    public UserResponse createUser(RegisterUserRequest request){
         User user = User.builder()
                 .name(request.getUserName())
                 .studentId(request.getStudentId())
@@ -100,6 +101,12 @@ public class UserService {
                 .salt(null)
                 .build();
         saveUser(user);
-        return new RegisterUserResponse(user.getIdx());
+        return new UserResponse(user.getIdx());
+    }
+
+    public UserResponse userLogin(LoginRequest request){
+        User user = userRepository.findByStudentId(request.getUserId()).orElseThrow(() -> new UserNotFoundException(-1L));
+        if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
+        return new UserResponse(user.getIdx());
     }
 }
