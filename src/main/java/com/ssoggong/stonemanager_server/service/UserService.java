@@ -7,6 +7,7 @@ import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserSubjectDto;
 import com.ssoggong.stonemanager_server.dto.user.UserSubjectResponse;
+import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.entity.UserSubject;
@@ -27,6 +28,7 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ProjectService projectService;
 
     @Transactional
     public void saveUser(User user) { userRepository.save(user); }
@@ -38,7 +40,8 @@ public class UserService {
         Set<ProjectUser> projectUserSet = user.getProjectUserSet();
         List<ReadProjectListDto> dto = new ArrayList<>();
         for(ProjectUser projectUser: projectUserSet) {
-            dto.add(ReadProjectListDto.of(projectUser.getProject()));
+            Project project = projectUser.getProject();
+            dto.add(ReadProjectListDto.of(project, projectService.getProgressRate(project)));
         }
         return new ReadProjectListResponse(dto);
     }
