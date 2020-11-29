@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.project.ReadProjectListResponse;
+import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.service.ProjectService;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class HomeController {
 
     @GetMapping
     public ResponseEntity<Message> readProjectList(@RequestHeader("userIndex") Long userId) {
-        ReadProjectListResponse response = userService.ReadProjectList(userId);
+        User user = userService.findById(userId);
+        ReadProjectListResponse response = userService.ReadProjectList(user);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
