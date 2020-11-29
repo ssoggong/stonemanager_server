@@ -49,4 +49,15 @@ public class TaskTagController {
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_TASK_TAG);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{tagIndex}")
+    public ResponseEntity<Message> deleteTaskTag(@PathVariable Long tagIndex,
+                                                 @RequestHeader("userIndex") Long userId,
+                                                 @RequestHeader("projectIndex") Long projectId,
+                                                 @RequestHeader("taskIndex") Long taskId){
+        userService.findById(userId);
+        Project project = projectService.findByUserAndProject(userId, projectId);
+        taskService.findByProjectAndTask(project, taskId);
+        taskTagService.deleteTaskTag(tagIndex);
+    }
 }

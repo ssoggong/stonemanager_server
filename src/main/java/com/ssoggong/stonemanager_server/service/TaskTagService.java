@@ -38,4 +38,10 @@ public class TaskTagService {
         taskTag.setColor(request.getTagColor());
         saveTaskTag(taskTag);
     }
+
+    @Transactional
+    public void deleteTaskTag(Long taskTagId){
+        TaskTag taskTag = findById(taskTagId);
+        taskTagRepository.delete(taskTag);
+    }
 }
