@@ -1,7 +1,9 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.checklist.ChecklistRequest;
+import com.ssoggong.stonemanager_server.dto.checklist.ChecklistResponse;
 import com.ssoggong.stonemanager_server.entity.*;
+import com.ssoggong.stonemanager_server.exception.ChecklistNotFoundException;
 import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
 import com.ssoggong.stonemanager_server.exception.TaskTagNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
@@ -23,13 +25,26 @@ public class ChecklistService {
     @Transactional
     public void saveChecklist(Checklist checklist) { checklistRepository.save(checklist); }
 
+    public Checklist findById(Long checklistId) {
+        return checklistRepository.findById(checklistId).orElseThrow(() -> new ChecklistNotFoundException(checklistId));
+    }
+
     @Transactional
-    public void createChecklist(Task task, ChecklistRequest checklistRequest) {
+    public ChecklistResponse createChecklist(Task task, ChecklistRequest checklistRequest) {
         Checklist checklist = Checklist.builder()
                 .name(checklistRequest.getChecklistName())
                 .state(checklistRequest.getChecklistState())
                 .task(task)
                 .build();
-        saveChecklist(checklist);
+        Long checklistId = checklistRepository.save(checklist).getIdx();
+
+        return new ChecklistResponse(checklistId);
+    }
+
+    @Transactional
+    public void updateChecklist(Checklist checklist, ChecklistRequest checklistRequest) {
+        checklist.setName(checklistRequest.getChecklistName());
+        checklist.setState(checklistRequest.getChecklistState());
+        checklistRepository.save(checklist);
     }
 }
