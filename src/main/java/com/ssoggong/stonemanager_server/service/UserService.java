@@ -1,7 +1,7 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.ReadProjectListDto;
-import com.ssoggong.stonemanager_server.dto.ReadProjectListResponse;
+import com.ssoggong.stonemanager_server.dto.project.ReadProjectListDto;
+import com.ssoggong.stonemanager_server.dto.project.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service

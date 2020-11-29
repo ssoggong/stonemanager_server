@@ -1,8 +1,8 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.CreateScheduleTagRequest;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleTagDto;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.scheduleTag.CreateScheduleTagRequest;
+import com.ssoggong.stonemanager_server.dto.scheduleTag.ReadScheduleTagDto;
+import com.ssoggong.stonemanager_server.dto.scheduleTag.ReadScheduleTagResponse;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ScheduleTag;
 import com.ssoggong.stonemanager_server.entity.User;
