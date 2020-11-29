@@ -1,16 +1,15 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.scheduleTag;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadScheduleTagResponse {
-    private List<ReadScheduleTagDto> tagInfo;
+public class CreateScheduleTagRequest {
+    private String tagName;
+    private Integer tagColor;
 }

@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.project;
 
 import com.ssoggong.stonemanager_server.entity.Project;
 import lombok.AllArgsConstructor;

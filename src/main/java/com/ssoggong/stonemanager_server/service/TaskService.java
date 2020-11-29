@@ -1,7 +1,6 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.CreateTaskResponse;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskDetailDto;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskList_taskDto;
