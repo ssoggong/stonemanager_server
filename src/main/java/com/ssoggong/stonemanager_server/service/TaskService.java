@@ -44,6 +44,10 @@ public class TaskService {
     @Transactional
     public void saveTask(Task task) { taskRepository.save(task); }
 
+    public Task findById(Long taskId){
+        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    }
+
     @Transactional
     public CreateTaskResponse createTask(Long userId, Long projectId) {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -124,8 +128,34 @@ public class TaskService {
         return new ReadTaskListResponse(taskDtoList);
     }
 
-    public Task findById(Long taskId){
-        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    public ReadTaskListResponse readTaskListByUser(Long userId, Long projectId, Long assigneeId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(assigneeId));
+
+        List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
+        for(UserTask userTask: userTaskRepository.findAllByUser(assignee)) {
+            Task task = userTask.getTask();
+            ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
+            taskDtoList.add(taskDto);
+        }
+
+        return new ReadTaskListResponse(taskDtoList);
+    }
+
+    public ReadTaskListResponse readTaskListByTag(Long userId, Long projectId, Long tagId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        TaskTag taskTag = taskTagRepository.findById(tagId).orElseThrow(() -> new TaskTagNotFoundException(tagId));
+
+        List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
+        for(TaskTaskTag taskTaskTag: taskTaskTagRepository.findAllByTaskTag(taskTag)) {
+            Task task = taskTaskTag.getTask();
+            ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
+            taskDtoList.add(taskDto);
+        }
+
+        return new ReadTaskListResponse(taskDtoList);
     }
 
     public Task findByProjectAndTask(Project project, Long taskId){
@@ -136,5 +166,6 @@ public class TaskService {
         }
         else throw new TaskNotFoundException(taskId);
     }
+
 
 }

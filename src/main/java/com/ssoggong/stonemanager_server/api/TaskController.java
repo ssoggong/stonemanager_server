@@ -45,10 +45,31 @@ public class TaskController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    /*
     @GetMapping
     public ResponseEntity<Message> readTaskList(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId) {
         ReadTaskListResponse response = taskService.readTaskList(userId, projectId);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_TASK_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+     */
+
+    @GetMapping()
+    public ResponseEntity<Message> readTaskListByUser(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId,
+                                                      @RequestParam(value = "assigneeIndex", required = false, defaultValue = "0") Long assigneeId,
+                                                      @RequestParam(value = "tagIndex", required = false, defaultValue = "0")Long tagId) {
+
+        ReadTaskListResponse response;
+        if(assigneeId == 0 && tagId == 0) {
+            response = taskService.readTaskList(userId, projectId); }
+        else {
+            if(assigneeId != 0) { response = taskService.readTaskListByUser(userId, projectId, assigneeId); }
+            else { response = taskService.readTaskListByTag(userId, projectId, tagId); }
+        }
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_TASK_LIST, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
