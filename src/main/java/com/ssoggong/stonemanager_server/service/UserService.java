@@ -4,9 +4,7 @@ import com.ssoggong.stonemanager_server.dto.project.ReadProjectListDto;
 import com.ssoggong.stonemanager_server.dto.project.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
-import com.ssoggong.stonemanager_server.dto.user.UserInfoResponse;
-import com.ssoggong.stonemanager_server.dto.user.UserSubjectDto;
-import com.ssoggong.stonemanager_server.dto.user.UserSubjectResponse;
+import com.ssoggong.stonemanager_server.dto.user.*;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.ProjectUser;
 import com.ssoggong.stonemanager_server.entity.Subject;
@@ -89,5 +87,19 @@ public class UserService {
         User user = findById(userId);
         user.setImage(imageUri);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public RegisterUserResponse createUser(RegisterUserRequest request){
+        User user = User.builder()
+                .name(request.getUserName())
+                .studentId(request.getStudentId())
+                .pw(request.getPassword())
+                .email(request.getEmail())
+                .image(null)
+                .salt(null)
+                .build();
+        saveUser(user);
+        return new RegisterUserResponse(user.getIdx());
     }
 }

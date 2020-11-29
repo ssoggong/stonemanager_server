@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserSubjectRepository extends JpaRepository<UserSubject, Long> {
-    @Modifying
     @Transactional
     @Query(value = "select * from user_subject where subject_idx = :subjectId and user_idx = :userId", nativeQuery = true)
     List<UserSubject> findByUserAndSubject(@Param("subjectId") Long subjectIdx,

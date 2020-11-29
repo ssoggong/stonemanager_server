@@ -3,6 +3,8 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.dto.user.RegisterUserRequest;
+import com.ssoggong.stonemanager_server.dto.user.RegisterUserResponse;
 import com.ssoggong.stonemanager_server.dto.user.UserProfileDto;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,13 @@ public class UserController {
                                                       @RequestBody UserProfileDto userProfile){
         userService.updateProfileImage(userId, userProfile.getUserProfileImage());
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_USER_IMAGE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Message> registerUser(@RequestBody RegisterUserRequest request){
+        RegisterUserResponse response = userService.createUser(request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_USER, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
