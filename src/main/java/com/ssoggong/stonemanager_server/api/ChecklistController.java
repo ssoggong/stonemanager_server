@@ -52,4 +52,18 @@ public class ChecklistController {
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_CHECKLIST);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Message> deleteChecklist(@RequestHeader("userIndex") Long userId,
+                                                   @RequestHeader("projectIndex") Long projectId,
+                                                   @RequestHeader("taskIndex") Long taskId,
+                                                   @RequestHeader("checklistIndex") Long checklistId) {
+        User user = userService.findById(userId);
+        Project project = projectService.findById(projectId);
+        Task task = taskService.findById(taskId);
+        Checklist checklist = checklistService.findById(checklistId);
+        checklistService.deleteChecklist(checklist);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_CHECKLIST);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
