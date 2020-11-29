@@ -5,6 +5,7 @@ import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskDetailDto;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
 import com.ssoggong.stonemanager_server.dto.task.UpdateTaskRequest;
 import com.ssoggong.stonemanager_server.entity.Checklist;
@@ -31,7 +32,7 @@ public class TaskController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PutMapping("{taskIndex}")
+    @PutMapping("/{taskIndex}")
     public ResponseEntity<Message> updateTask(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("taskIndex") Long taskId, @RequestBody UpdateTaskRequest request) {
         taskService.updateTask(userId, projectId, taskId, request);
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_TASK);
@@ -56,7 +57,7 @@ public class TaskController {
      */
 
     @GetMapping()
-    public ResponseEntity<Message> readTaskListByUser(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId,
+    public ResponseEntity<Message> readTaskList(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId,
                                                       @RequestParam(value = "assigneeIndex", required = false, defaultValue = "0") Long assigneeId,
                                                       @RequestParam(value = "tagIndex", required = false, defaultValue = "0")Long tagId) {
 
@@ -72,4 +73,10 @@ public class TaskController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @GetMapping("/{taskIndex}")
+    public ResponseEntity<Message> readTaskListDetail(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @PathVariable("taskIndex") Long taskId) {
+        ReadTaskDetailDto response = taskService.readTaskDetail(userId, projectId, taskId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_TASK, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
