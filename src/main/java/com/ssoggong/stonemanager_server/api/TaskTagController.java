@@ -59,5 +59,7 @@ public class TaskTagController {
         Project project = projectService.findByUserAndProject(userId, projectId);
         taskService.findByProjectAndTask(project, taskId);
         taskTagService.deleteTaskTag(tagIndex);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_TASK_TAG);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
