@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.user.*;
+import com.ssoggong.stonemanager_server.service.AuthService;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final AuthService authService;
     @GetMapping
     public ResponseEntity<Message> readUserInfo(@RequestHeader("userIndex") Long userId){
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_USER_INFO, userService.readUserInfo(userId));
@@ -54,6 +56,13 @@ public class UserController {
                                                   @RequestBody UpdatePasswordRequest request){
         userService.updatePassword(request, userId);
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_PASSWORD);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/email")
+    public ResponseEntity<Message> sendAuthCode(@RequestBody EmailAuthRequest request){
+        authService.sendAuthcode(request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.SEND_AUTH_CODE);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
