@@ -47,4 +47,9 @@ public class ChecklistService {
         checklist.setState(checklistRequest.getChecklistState());
         checklistRepository.save(checklist);
     }
+
+    @Transactional
+    public void deleteChecklist(Checklist checklist) {
+        checklistRepository.delete(checklist);
+    }
 }
