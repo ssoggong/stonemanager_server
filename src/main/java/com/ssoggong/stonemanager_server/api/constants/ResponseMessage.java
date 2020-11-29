@@ -12,6 +12,7 @@ public class ResponseMessage {
     public static final String READ_USER_SUBJECT = "수강 과목 조회 성공";
     public static final String UPDATE_USER_IMAGE = "프로필사진 변경 성공";
     public static final String SEND_AUTH_CODE = "인증 이메일 전송 성공";
+    public static final String CHECK_AUTH_CODE = "인증 번호 확인 성공";
 
     public static final String READ_SUBJECT_STUDENT = "수강생 조회 성공";
 
