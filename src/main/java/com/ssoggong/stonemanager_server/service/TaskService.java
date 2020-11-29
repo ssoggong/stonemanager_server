@@ -2,6 +2,7 @@ package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
 import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskDetailDto;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskList_taskDto;
 import com.ssoggong.stonemanager_server.entity.Project;
@@ -168,4 +169,11 @@ public class TaskService {
     }
 
 
+    public ReadTaskDetailDto readTaskDetail(Long userId, Long projectId, Long taskId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        return ReadTaskDetailDto.of(task);
+    }
 }
