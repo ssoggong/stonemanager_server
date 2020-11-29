@@ -34,8 +34,7 @@ public class UserService {
 
     public User findById(Long userId) { return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)); }
 
-    public ReadProjectListResponse ReadProjectList(Long userId) {
-        User user = findById(userId);
+    public ReadProjectListResponse ReadProjectList(User user) {
         Set<ProjectUser> projectUserSet = user.getProjectUserSet();
         List<ReadProjectListDto> dto = new ArrayList<>();
         for(ProjectUser projectUser: projectUserSet) {

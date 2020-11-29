@@ -32,11 +32,12 @@ public class ScheduleTagService {
 
     public void saveScheduleTag(ScheduleTag scheduleTag) { scheduleTagRepository.save(scheduleTag);}
 
-    @Transactional
-    public void createScheduleTag(Long userId, Long projectId, CreateScheduleTagRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    public ScheduleTag findById(Long scheduleTagId) {
+        return scheduleTagRepository.findById(scheduleTagId).orElseThrow( ()-> new ScheduleTagNotFoundException(scheduleTagId));
+    }
 
+    @Transactional
+    public void createScheduleTag(CreateScheduleTagRequest request) {
         ScheduleTag scheduleTag = ScheduleTag.builder()
                 .name(request.getTagName())
                 .color(request.getTagColor())
@@ -46,9 +47,7 @@ public class ScheduleTagService {
         saveScheduleTag(scheduleTag);
     }
 
-    public ReadScheduleTagResponse readScheduleTag(Long userId, Long projectId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    public ReadScheduleTagResponse readScheduleTag(Project project) {
         Set<ScheduleTag> scheduleTagList = project.getScheduleTagSet();
 
         List<ReadScheduleTagDto> dto = new ArrayList<>();
@@ -59,10 +58,7 @@ public class ScheduleTagService {
     }
 
     @Transactional
-    public void updateScheduleTag(Long userId, Long projectId, Long scheduleTagId, CreateScheduleTagRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(() -> new ScheduleTagNotFoundException(scheduleTagId));
+    public void updateScheduleTag(ScheduleTag scheduleTag, CreateScheduleTagRequest request) {
 
         scheduleTag.setName(request.getTagName());
         scheduleTag.setColor(request.getTagColor());
@@ -71,10 +67,7 @@ public class ScheduleTagService {
     }
 
     @Transactional
-    public void deleteScheduleTag(Long userId, Long projectId, Long scheduleTagId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        ScheduleTag scheduleTag = scheduleTagRepository.findById(scheduleTagId).orElseThrow(() -> new ScheduleTagNotFoundException(scheduleTagId));
+    public void deleteScheduleTag(ScheduleTag scheduleTag) {
         scheduleTagRepository.delete(scheduleTag);
     }
 }

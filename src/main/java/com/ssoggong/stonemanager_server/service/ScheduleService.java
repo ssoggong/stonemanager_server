@@ -2,10 +2,7 @@ package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.schedule.*;
 import com.ssoggong.stonemanager_server.entity.*;
-import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
-import com.ssoggong.stonemanager_server.exception.ScheduleNotFoundException;
-import com.ssoggong.stonemanager_server.exception.ScheduleTagNotFoundException;
-import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
+import com.ssoggong.stonemanager_server.exception.*;
 import com.ssoggong.stonemanager_server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,14 +30,16 @@ public class ScheduleService {
     @Transactional
     public void saveSchedule(Schedule schedule) { scheduleRepository.save(schedule); }
 
+    public Schedule findById(Long scheduleId){
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
+    }
+
     @Transactional
-    public void createSchedule(Long userId, Long projectId, CreateScheduleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    public void createSchedule(Project project, CreateScheduleRequest request) {
         List<Long> assigneeIdList =  request.getScheduleAssigneeIdList();
         List<Long> scheduleTagIdList = request.getScheduleTagIdList();
 
-        //== 프로젝트 생성 ==//
-        Project project = projectRepository.findById(projectId).orElseThrow();
+        //== 일정 생성 ==//
         Schedule schedule = Schedule.builder()
                 .name(request.getScheduleName())
                 .date(request.getScheduleDate())
@@ -52,7 +51,7 @@ public class ScheduleService {
 
         //== userSchedule 생성 및 연관관계 설정 ==//
         for(Long assigneeId : assigneeIdList) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(assigneeId));
             UserSchedule userSchedule = UserSchedule.builder()
                     .user(assignee)
                     .schedule(schedule)
@@ -71,9 +70,7 @@ public class ScheduleService {
         saveSchedule(schedule);
     }
 
-    public ReadScheduleListResponse readSchedule(Long userId, Long projectId, int year, int month) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    public ReadScheduleListResponse readSchedule(Long projectId, int year, int month) {
         List<Schedule> scheduleList = scheduleRepository.readScheduleByYearAndMonth(year, month, projectId);
 
         List<ReadScheduleListDto> dto = new ArrayList<>();
@@ -85,30 +82,18 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void deleteSchedule(Long userId, Long projectId, Long scheduleId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
-
+    public void deleteSchedule(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);
     }
 
-    public ReadScheduleDetailResponse readScheduleDetail(Long userId, Long projectId, Long scheduleId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
-
+    public ReadScheduleDetailResponse readScheduleDetail(Schedule schedule) {
         ReadScheduleDetailDto dto = ReadScheduleDetailDto.of(schedule);
 
         return new ReadScheduleDetailResponse(dto);
     }
 
     @Transactional
-    public void updateSchedule(Long userId, Long projectId, Long scheduleId, UpdateScheduleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
-
+    public void updateSchedule(Schedule schedule, UpdateScheduleRequest request) {
         schedule.setName(request.getScheduleName());
         schedule.setDate(request.getScheduleDate());
         schedule.setDescription(request.getScheduleDescription());
@@ -124,7 +109,7 @@ public class ScheduleService {
         }
 
         for(Long assigneeId: request.getScheduleAssigneeIdList()) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(assigneeId));
             UserSchedule userSchedule = UserSchedule.builder()
                     .user(assignee)
                     .schedule(schedule)
