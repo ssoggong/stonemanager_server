@@ -51,4 +51,17 @@ public class CommentController {
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_COMMENT);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{commentIndex}")
+    public ResponseEntity<Message> deleteComment(@RequestHeader("userIndex") Long userId,
+                                                 @RequestHeader("projectIndex") Long projectId,
+                                                 @RequestHeader("taskIndex") Long taskId,
+                                                 @PathVariable Long commentIndex){
+        userService.findById(userId);
+        Project project = projectService.findByUserAndProject(userId, projectId);
+        taskService.findByProjectAndTask(project, taskId);
+        commentService.deleteComment(commentIndex, userId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_COMMENT);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

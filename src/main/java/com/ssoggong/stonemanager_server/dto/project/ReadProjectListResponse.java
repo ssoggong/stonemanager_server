@@ -1,5 +1,6 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.project;
 
+import com.ssoggong.stonemanager_server.dto.project.ReadProjectListDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
