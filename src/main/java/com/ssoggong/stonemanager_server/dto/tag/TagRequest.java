@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto.scheduleTag;
+package com.ssoggong.stonemanager_server.dto.tag;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateScheduleTagRequest {
+@NoArgsConstructor
+public class TagRequest {
     private String tagName;
     private Integer tagColor;
 }

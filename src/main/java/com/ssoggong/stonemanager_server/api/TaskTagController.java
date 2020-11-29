@@ -3,7 +3,7 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
-import com.ssoggong.stonemanager_server.dto.tasktag.TaskTagRequest;
+import com.ssoggong.stonemanager_server.dto.tag.TagRequest;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.service.ProjectService;
 import com.ssoggong.stonemanager_server.service.TaskService;
@@ -27,7 +27,7 @@ public class TaskTagController {
     public ResponseEntity<Message> createTaskTag(@RequestHeader("userIndex") Long userId,
                                                  @RequestHeader("projectIndex") Long projectId,
                                                  @RequestHeader("taskIndex") Long taskId,
-                                                 @RequestBody TaskTagRequest request){
+                                                 @RequestBody TagRequest request){
         userService.findById(userId);
         Project project = projectService.findByUserAndProject(userId, projectId);
         taskService.findByProjectAndTask(project, taskId);
@@ -41,7 +41,7 @@ public class TaskTagController {
                                                  @RequestHeader("userIndex") Long userId,
                                                  @RequestHeader("projectIndex") Long projectId,
                                                  @RequestHeader("taskIndex") Long taskId,
-                                                 @RequestBody TaskTagRequest request){
+                                                 @RequestBody TagRequest request){
         userService.findById(userId);
         Project project = projectService.findByUserAndProject(userId, projectId);
         taskService.findByProjectAndTask(project, taskId);

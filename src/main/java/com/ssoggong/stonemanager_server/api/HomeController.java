@@ -26,7 +26,7 @@ public class HomeController {
     @GetMapping
     public ResponseEntity<Message> readProjectList(@RequestHeader("userIndex") Long userId) {
         User user = userService.findById(userId);
-        ReadProjectListResponse response = userService.ReadProjectList(user);
+        ReadProjectListResponse response = userService.ReadProjectList(userId);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

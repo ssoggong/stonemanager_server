@@ -1,6 +1,6 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.tasktag.TaskTagRequest;
+import com.ssoggong.stonemanager_server.dto.tag.TagRequest;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.TaskTag;
 import com.ssoggong.stonemanager_server.exception.TaskTagNotFoundException;
@@ -22,7 +22,7 @@ public class TaskTagService {
     public TaskTag findById(Long taskTagId) { return taskTagRepository.findById(taskTagId).orElseThrow(() -> new TaskTagNotFoundException(taskTagId));}
 
     @Transactional
-    public void createTaskTag(TaskTagRequest request, Project project){
+    public void createTaskTag(TagRequest request, Project project){
         TaskTag taskTag = TaskTag.builder()
                 .name(request.getTagName())
                 .color(request.getTagColor())
@@ -32,7 +32,7 @@ public class TaskTagService {
     }
 
     @Transactional
-    public void updateTaskTag(TaskTagRequest request, Long taskTagId){
+    public void updateTaskTag(TagRequest request, Long taskTagId){
         TaskTag taskTag = findById(taskTagId);
         taskTag.setName(request.getTagName());
         taskTag.setColor(request.getTagColor());
