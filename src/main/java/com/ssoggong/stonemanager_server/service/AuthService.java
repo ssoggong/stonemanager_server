@@ -1,7 +1,10 @@
 package com.ssoggong.stonemanager_server.service;
 
+import com.ssoggong.stonemanager_server.dto.user.AuthRequest;
 import com.ssoggong.stonemanager_server.dto.user.EmailAuthRequest;
 import com.ssoggong.stonemanager_server.entity.Auth;
+import com.ssoggong.stonemanager_server.exception.MultipleNotFoundException;
+import com.ssoggong.stonemanager_server.exception.WrongAuthcodeException;
 import com.ssoggong.stonemanager_server.repository.AuthRepository;
 import com.ssoggong.stonemanager_server.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +41,10 @@ public class AuthService {
     public String createRandomCode(){
         int random = (int)(Math.random()*10000);
         return String.valueOf(random);
+    }
+
+    public void checkAuthcode(AuthRequest request){
+        Auth auth = authRepository.findByEmail(request.getEmail()).orElseThrow(MultipleNotFoundException::new);
+        if(auth.getCode() != request.getCode()) throw new WrongAuthcodeException(request.getCode());
     }
 }
