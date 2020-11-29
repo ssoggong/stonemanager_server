@@ -25,6 +25,8 @@ public class UserTask {
     @Builder
     public UserTask(User user, Task task) {
         this.user = user;
+        user.getUserTaskSet().add(this);
         this.task = task;
+        task.getUserTaskSet().add(this);
     }
 }

@@ -25,7 +25,9 @@ public class ProjectUser {
     @Builder
     public ProjectUser(User user, Project project) {
         this.user = user;
+        user.getProjectUserSet().add(this);
         this.project = project;
+        project.getProjectUserSet().add(this); //== 연관관계 설정 ==//
     }
 }
 

@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.project;
 
 import lombok.*;
 
@@ -9,5 +9,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectWithdrawResponse {
-    private List<ProjectWithdrawDto> data;
+    private List<ProjectWithdrawDto> projects;
 }

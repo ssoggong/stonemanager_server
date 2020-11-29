@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Checklist {
 
@@ -20,15 +20,11 @@ public class Checklist {
     private String name;
     private Boolean state; // 타입 확인 필요(Enum)
 
-    public void setTask(Task task){
-        this.task = task;
-        task.getChecklistSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
     public Checklist(Task task, String name, Boolean state) {
         this.task = task;
+        task.getChecklistSet().add(this);
         this.name = name;
         this.state = state;
     }

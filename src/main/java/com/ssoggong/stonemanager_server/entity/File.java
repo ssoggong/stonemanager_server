@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File {
 
@@ -18,17 +18,14 @@ public class File {
     private Task task;
 
     private String name;
-
-    //== 연관관계 메서드 ==//
-    public void setTask(Task task){
-        this.task = task;
-        task.getFileSet().add(this);
-    }
+    private String fileUri;
 
     //== 빌더 ==//
     @Builder
-    public File(Task task, String name) {
+    public File(Task task, String name, String uri) {
         this.task = task;
+        task.getFileSet().add(this);
         this.name = name;
+        this.fileUri = uri;
     }
 }

@@ -34,22 +34,19 @@ public class Schedule {
 
     private String description;
 
-    //== 연관관계 메서드 ==//
-    public void addUserSchedule(UserSchedule userSchedule){
-        userScheduleSet.add(userSchedule);
-        userSchedule.setSchedule(this);
-    }
-
-    public void addScheduleScheduleTag(ScheduleScheduleTag scheduleScheduleTag) {
-        scheduleScheduleTagSet.add(scheduleScheduleTag);
-        scheduleScheduleTag.setSchedule(this);
-    }
-
     @Builder
     public Schedule(Project project, Set<UserSchedule> userScheduleSet, Set<ScheduleScheduleTag> scheduleScheduleTagSet, String name, LocalDateTime date, String description) {
         this.project = project;
-        this.userScheduleSet = userScheduleSet;
-        this.scheduleScheduleTagSet = scheduleScheduleTagSet;
+        project.getScheduleSet().add(this);
+
+        for(UserSchedule userSchedule: userScheduleSet) {
+            this.userScheduleSet.add(userSchedule);
+        }
+
+        for(ScheduleScheduleTag scheduleScheduleTag: scheduleScheduleTagSet) {
+            this.scheduleScheduleTagSet.add(scheduleScheduleTag);
+        }
+
         this.name = name;
         this.date = date;
         this.description = description;

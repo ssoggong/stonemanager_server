@@ -1,12 +1,14 @@
 package com.ssoggong.stonemanager_server;
 
 import com.ssoggong.stonemanager_server.entity.*;
+import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +20,7 @@ public class InitDb {
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
+        //initService.dbInit1();
     }
 
     @Component
@@ -56,15 +58,10 @@ public class InitDb {
 
             Set<Student> studentSet = new HashSet<>();
 
-            Student student1 = createStudent("고운", "2016112182");
-            Student student2 = createStudent("종근", "2016112107");
-            Student student3 = createStudent("윤호", "2016112100");
-            Student student4 = createStudent("영훈", "2016112101");
-
-            student1.setDepartment(department);
-            student2.setDepartment(department);
-            student3.setDepartment(department);
-            student4.setDepartment(department);
+            Student student1 = createStudent("고운", "2016112182", department);
+            Student student2 = createStudent("종근", "2016112107", department);
+            Student student3 = createStudent("윤호", "2016112100", department);
+            Student student4 = createStudent("영훈", "2016112101", department);
 
             studentSet.add(student1);
             studentSet.add(student2);
@@ -74,10 +71,11 @@ public class InitDb {
             return department;
         }
 
-        private Student createStudent(String name, String studentId){
+        private Student createStudent(String name, String studentId, Department department){
             Student student = Student.builder()
                     .name(name)
                     .studentId(studentId)
+                    .department(department)
                     .subjectStudentSet(new HashSet<>())
                     .build();
 
@@ -106,6 +104,9 @@ public class InitDb {
                     .scheduleSet(new HashSet<>())
                     .subject(subject)
                     .taskSet(new HashSet<>())
+                    .projectUserSet(new HashSet<>())
+                    .scheduleTagSet(new HashSet<>())
+                    .taskTagSet(new HashSet<>())
                     .build();
 
             return project;
@@ -115,6 +116,7 @@ public class InitDb {
             Professor professor = Professor.builder()
                     .name(name)
                     .department(department)
+                    .subjectSet(new HashSet<>())
                     .build();
 
             return professor;
@@ -129,6 +131,74 @@ public class InitDb {
             return projectUser;
         }
 
+        private ScheduleTag createScheduleTag(String name, Integer color, Project project) {
+            ScheduleTag scheduleTag = ScheduleTag.builder()
+                    .name(name)
+                    .color(color)
+                    .scheduleScheduleTagSet(new HashSet<>())
+                    .project(project)
+                    .build();
+
+            return scheduleTag;
+        }
+
+        private TaskTag createTaskTag(String name, Integer color, Project project) {
+            TaskTag taskTag = TaskTag.builder()
+                    .name(name)
+                    .color(color)
+                    .project(project)
+                    .taskTaskTagSet(new HashSet<>())
+                    .build();
+
+            return taskTag;
+        }
+
+        private File createFile(String name, Task task) {
+            File file = File.builder()
+                    .name(name)
+                    .task(task)
+                    .build();
+
+            return file;
+        }
+
+        private Comment createComment(User user, Task task, LocalDateTime createDate, String content) {
+            Comment comment = Comment.builder()
+                    .user(user)
+                    .task(task)
+                    .createdDate(createDate)
+                    .content(content)
+                    .build();
+
+            return comment;
+        }
+
+        private Checklist createChecklist(String name, Boolean state, Task task) {
+            Checklist checklist = Checklist.builder()
+                    .name(name)
+                    .state(state)
+                    .task(task)
+                    .build();
+
+            return checklist;
+        }
+
+        private Task createTask(String name, LocalDateTime dateTime, String description, Integer state, Project project, Set<UserTask> userTaskSet, Set<TaskTaskTag> taskTaskTagSet, Set<Checklist> checklistSet, Set<File> fileSet, Set<Comment> commentSet ) {
+            Task task = Task.builder()
+                    .name(name)
+                    .deadline(dateTime)
+                    .description(description)
+                    .state(state)
+                    .project(project)
+                    .userTaskSet(userTaskSet)
+                    .taskTaskTagSet(taskTaskTagSet)
+                    .checklistSet(checklistSet)
+                    .fileSet(fileSet)
+                    .commentSet(commentSet)
+                    .build();
+
+            return task;
+        }
         private final EntityManager em;
         public void dbInit1(){
 
@@ -159,17 +229,39 @@ public class InitDb {
             em.persist(projectUser1);
             em.persist(projectUser2);
             em.persist(projectUser3);
+
+            ScheduleTag scheduleTag1 = createScheduleTag("scheduleTag1", 1, project1);
+            ScheduleTag scheduleTag2 = createScheduleTag("scheduleTag2", 2, project1);
+            em.persist(scheduleTag1);
+            em.persist(scheduleTag2);
+
+            TaskTag taskTag1 = createTaskTag("taskTag1", 1, project1);
+            TaskTag taskTag2 = createTaskTag("taskTag2", 2, project1);
+            em.persist(taskTag1);
+            em.persist(taskTag2);
+
+            Task task1 = createTask("task1", null, "할 일1", 0, project1, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+            em.persist(task1);
+
+            File file1 = createFile("file1", task1);
+            File file2 = createFile("file2", task1);
+            em.persist(file1);
+            em.persist(file2);
+
+            Comment comment1 = createComment(user1, task1, null, "테스트 코멘트1");
+            Comment comment2 = createComment(user2, task1, null, "테스트 코멘트2");
+            Comment comment3 = createComment(user3, task1, null, "테스트 코멘트3");
+            em.persist(comment1);
+            em.persist(comment2);
+            em.persist(comment3);
+
+            Checklist checklist1 = createChecklist("checklist1", true, task1);
+            Checklist checklist2 = createChecklist("checklist2", false, task1);
+            Checklist checklist3 = createChecklist("checklist3", true, task1);
+            em.persist(checklist1);
+            em.persist(checklist2);
+            em.persist(checklist3);
         }
 
     }
 }
-
-
-
-
-
-
-
-
-
-

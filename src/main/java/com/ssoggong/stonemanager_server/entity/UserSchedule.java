@@ -25,6 +25,9 @@ public class UserSchedule {
     @Builder
     public UserSchedule(User user, Schedule schedule) {
         this.user = user;
+        user.getUserScheduleSet().add(this); //== 연관관계 설정 ==//
         this.schedule = schedule;
+        schedule.getUserScheduleSet().add(this); //== 연관관계 설정 ==//
+
     }
 }

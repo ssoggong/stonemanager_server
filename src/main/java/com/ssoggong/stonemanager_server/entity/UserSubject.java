@@ -7,18 +7,17 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "USER_SUBJECT")
 public class UserSubject {
     @Id
     @GeneratedValue
     @Column(name = "user_subject_idx")
     private Long idx;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
     private User user;
 
-    @ManyToOne(targetEntity = Subject.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_idx")
     private Subject subject;
 
@@ -26,6 +25,8 @@ public class UserSubject {
     @Builder
     public UserSubject(User user, Subject subject) {
         this.user = user;
+        user.getUserSubjectSet().add(this);
         this.subject = subject;
+        subject.getUserSubjectSet().add(this); //== 연관관계 설정 ==//
     }
 }

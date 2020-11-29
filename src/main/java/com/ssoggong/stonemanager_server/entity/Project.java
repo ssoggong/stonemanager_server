@@ -24,6 +24,12 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Schedule> scheduleSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<TaskTag> taskTagSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<ScheduleTag> scheduleTagSet = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_idx")
     private Subject subject;
@@ -31,34 +37,33 @@ public class Project {
     private String projectName;
     private String teamName;
 
-    //== 연관관계 메서드 ==//
-    public void addProjectUser(ProjectUser projectUser) {
-        projectUserSet.add(projectUser);
-        projectUser.setProject(this);
-    }
-
-    public void addTask(Task task){
-        taskSet.add(task);
-        task.setProject(this);
-    }
-
-    public void addSchedule(Schedule schedule){
-        scheduleSet.add(schedule);
-        schedule.setProject(this);
-    }
-
-    public void setSubject(Subject subject){
-        this.subject = subject;
-        subject.getProjectSet().add(this);
-    }
-
     //== 빌더 ==//
     @Builder
-    public Project(Set<ProjectUser> projectUserSet, Set<Task> taskSet, Set<Schedule> scheduleSet, Subject subject, String projectName, String teamName) {
-        this.projectUserSet = projectUserSet;
-        this.taskSet = taskSet;
-        this.scheduleSet = scheduleSet;
+    public Project(Set<ProjectUser> projectUserSet, Set<Task> taskSet, Set<Schedule> scheduleSet, Set<TaskTag> taskTagSet, Set<ScheduleTag> scheduleTagSet, Subject subject, String projectName, String teamName) {
+
+        for(ProjectUser projectUser: projectUserSet) {
+            this.projectUserSet.add(projectUser);
+        }
+
+        for(Task task: taskSet) {
+            this.taskSet.add(task);
+        }
+
+        for(Schedule schedule: scheduleSet) {
+            this.scheduleSet.add(schedule);
+        }
+
+        for(TaskTag taskTag: taskTagSet){
+            this.taskTagSet.add(taskTag);
+        }
+
+        for(ScheduleTag scheduleTag: scheduleTagSet) {
+            this.scheduleTagSet.add(scheduleTag);
+        }
+
         this.subject = subject;
+        subject.getProjectSet().add(this); //== 연관관계 설정 ==//
+
         this.projectName = projectName;
         this.teamName = teamName;
     }
