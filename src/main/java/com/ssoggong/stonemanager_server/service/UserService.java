@@ -14,7 +14,12 @@ import com.ssoggong.stonemanager_server.exception.MultipleNotFoundException;
 import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
 import com.ssoggong.stonemanager_server.exception.WrongPasswordException;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
+import com.ssoggong.stonemanager_server.util.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +32,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
+    @Autowired
+    private JavaMailSender mailSender;
 
     private final UserRepository userRepository;
     private final ProjectService projectService;
