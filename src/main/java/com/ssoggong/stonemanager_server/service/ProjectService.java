@@ -119,4 +119,12 @@ public class ProjectService {
                 .build();
         saveProject(project);
     }
+
+    @Transactional
+    public void updateProject(Long projectId, UpdateProjectRequest request){
+        Project project = findById(projectId);
+        project.setTeamName(request.getProjectTeam());
+        project.setProjectName(request.getProjectName());
+        saveProject(project);
+    }
 }

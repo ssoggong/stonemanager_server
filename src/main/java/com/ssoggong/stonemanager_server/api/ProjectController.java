@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.project.*;
+import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.Subject;
 import com.ssoggong.stonemanager_server.entity.User;
 import com.ssoggong.stonemanager_server.service.*;
@@ -80,5 +81,18 @@ public class ProjectController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_SUBJECT_STUDENT, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    // TODO 이메일 전송
+    @PutMapping("{projectIndex}")
+    public ResponseEntity<Message> updateProject(@PathVariable Long projectIndex,
+                                                 @RequestHeader("userIndex") Long userIndex,
+                                                 @RequestBody UpdateProjectRequest request){
+        userService.findById(userIndex);
+        projectService.findByUserAndProject(userIndex, projectIndex);
+        projectService.updateProject(projectIndex, request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_PROJECT);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
 
