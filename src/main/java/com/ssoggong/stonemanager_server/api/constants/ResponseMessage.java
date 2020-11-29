@@ -11,6 +11,8 @@ public class ResponseMessage {
     public static final String READ_USER_INFO = "내 정보 조회 성공";
     public static final String READ_USER_SUBJECT = "수강 과목 조회 성공";
 
+    public static final String READ_SUBJECT_STUDENT = "수강생 조회 성공";
+
     public static final String CREATE_PROJECT_USER = "팀원 초대 성공";
     public static final String READ_PROJECT_USER = "팀원 조회 성공";
     public static final String DELETE_PROJECT_USER = "프로젝트 탈퇴 성공"; // 프로젝트 탈퇴
