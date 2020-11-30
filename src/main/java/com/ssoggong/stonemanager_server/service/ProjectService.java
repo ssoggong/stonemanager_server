@@ -95,6 +95,7 @@ public class ProjectService {
         for(Task task: tasks){
             dtos.add(DdayDto.of(task));
         }
+        dtos = dtos.stream().filter(ddayDto -> ddayDto.getDday() <= 3).collect(Collectors.toList());
         return dtos;
     }
 
