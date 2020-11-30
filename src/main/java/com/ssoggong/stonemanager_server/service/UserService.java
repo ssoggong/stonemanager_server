@@ -123,9 +123,10 @@ public class UserService {
     @Transactional
     public void findPassword(FindPasswordRequest request, Long userId){
         User user = findById(userId);
-        if(user.getName() != request.getUserName()) throw new WrongUsernameException(request.getUserName());
-        if(user.getStudentId() != request.getUserStudentId()) throw new WrongStudentIdException(request.getUserStudentId());
-        if(user.getEmail() != request.getUserEmail()) throw new WrongUseremailException(request.getUserEmail());
+        System.out.println(user.getEmail());
+        if(!user.getName().equals(request.getUserName())) throw new WrongUsernameException(request.getUserName());
+        if(!user.getStudentId().equals(request.getUserStudentId())) throw new WrongStudentIdException(request.getUserStudentId());
+        if(!user.getEmail().equals(request.getUserEmail())) throw new WrongUseremailException(request.getUserEmail());
         String newPassword = createNewPassword();
         user.setPw(newPassword);
         saveUser(user);
