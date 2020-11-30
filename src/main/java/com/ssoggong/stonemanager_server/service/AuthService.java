@@ -43,8 +43,10 @@ public class AuthService {
         return String.valueOf(random);
     }
 
+    @Transactional
     public void checkAuthcode(AuthRequest request){
         Auth auth = authRepository.findByEmail(request.getEmail()).orElseThrow(MultipleNotFoundException::new);
         if(auth.getCode() != request.getCode()) throw new WrongAuthcodeException(request.getCode());
+        authRepository.delete(auth);
     }
 }

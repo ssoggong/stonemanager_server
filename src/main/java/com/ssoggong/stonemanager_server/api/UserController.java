@@ -66,7 +66,7 @@ public class UserController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PostMapping("/auth")
+    @DeleteMapping("/auth")
     public ResponseEntity<Message> checkAuthCode(@RequestBody AuthRequest request){
         authService.checkAuthcode(request);
         Message message = new Message(StatusCode.OK, ResponseMessage.CHECK_AUTH_CODE);
