@@ -38,11 +38,17 @@ public class CommentService {
 
     @Transactional
     public void updateComment(Long commentId, String content, Long userId){
-        // TODO 작성자와 동일한지
         Comment comment = findById(commentId);
         if(!comment.getUser().getIdx().equals(userId)) throw new UnauthorizedUserException(userId);
         comment.setContent(content);
         commentRepository.save(comment);
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId, Long userId){
+        Comment comment = findById(commentId);
+        if(!comment.getUser().getIdx().equals(userId)) throw new UnauthorizedUserException(userId);
+        commentRepository.deleteById(commentId);
     }
 
 }

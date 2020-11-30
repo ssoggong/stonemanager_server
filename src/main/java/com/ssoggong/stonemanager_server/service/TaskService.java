@@ -1,7 +1,7 @@
 package com.ssoggong.stonemanager_server.service;
 
-import com.ssoggong.stonemanager_server.dto.CreateTaskResponse;
-import com.ssoggong.stonemanager_server.dto.ReadScheduleTagResponse;
+import com.ssoggong.stonemanager_server.dto.task.CreateTaskResponse;
+import com.ssoggong.stonemanager_server.dto.task.ReadTaskDetailDto;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskListResponse;
 import com.ssoggong.stonemanager_server.dto.task.ReadTaskList_taskDto;
 import com.ssoggong.stonemanager_server.entity.Project;
@@ -44,10 +44,12 @@ public class TaskService {
     @Transactional
     public void saveTask(Task task) { taskRepository.save(task); }
 
+    public Task findById(Long taskId){
+        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    }
+
     @Transactional
-    public CreateTaskResponse createTask(Long userId, Long projectId) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
+    public CreateTaskResponse createTask(Project project) {
         Task task = Task.builder()
                 .name("")
                 .description("")
@@ -65,10 +67,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void updateTask(Long userId, Long projectId, Long taskId, UpdateTaskRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    public void updateTask(Task task, UpdateTaskRequest request) {
 
         for(TaskTaskTag taskTaskTag: task.getTaskTaskTagSet()) {
             taskTaskTag.setTask(null);
@@ -93,7 +92,7 @@ public class TaskService {
         }
 
         for(Long assigneeId: request.getTaskAssigneeIdList()) {
-            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(userId));
+            User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new UserNotFoundException(assigneeId));
             UserTask userTask = UserTask.builder()
                     .task(task)
                     .user(assignee)
@@ -103,18 +102,12 @@ public class TaskService {
     }
 
     @Transactional
-    public void deleteTask(Long userId, Long projectId, Long taskId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    public void deleteTask(Task task) {
 
         taskRepository.delete(task);
     }
 
-    public ReadTaskListResponse readTaskList(Long userId, Long projectId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException(projectId));
-
+    public ReadTaskListResponse readTaskList(Project project) {
         List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
         for(Task task: project.getTaskSet()) {
             ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
@@ -124,8 +117,28 @@ public class TaskService {
         return new ReadTaskListResponse(taskDtoList);
     }
 
-    public Task findById(Long taskId){
-        return taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+    public ReadTaskListResponse readTaskListByUser(User assignee) {
+
+        List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
+        for(UserTask userTask: userTaskRepository.findAllByUser(assignee)) {
+            Task task = userTask.getTask();
+            ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
+            taskDtoList.add(taskDto);
+        }
+
+        return new ReadTaskListResponse(taskDtoList);
+    }
+
+    public ReadTaskListResponse readTaskListByTag(TaskTag taskTag) {
+
+        List<ReadTaskList_taskDto> taskDtoList = new ArrayList<>();
+        for(TaskTaskTag taskTaskTag: taskTaskTagRepository.findAllByTaskTag(taskTag)) {
+            Task task = taskTaskTag.getTask();
+            ReadTaskList_taskDto taskDto = ReadTaskList_taskDto.of(task);
+            taskDtoList.add(taskDto);
+        }
+
+        return new ReadTaskListResponse(taskDtoList);
     }
 
     public Task findByProjectAndTask(Project project, Long taskId){
@@ -137,4 +150,8 @@ public class TaskService {
         else throw new TaskNotFoundException(taskId);
     }
 
+
+    public ReadTaskDetailDto readTaskDetail(Task task) {
+        return ReadTaskDetailDto.of(task);
+    }
 }

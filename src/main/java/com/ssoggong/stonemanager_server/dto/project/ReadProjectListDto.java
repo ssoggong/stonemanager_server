@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.project;
 
 import com.ssoggong.stonemanager_server.entity.Project;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,9 @@ public class ReadProjectListDto {
     private Long projectIndex;
     private String projectName;
     private String projectSubject;
-    private Integer projectProgress;
+    private Double projectProgress;
 
-    public static ReadProjectListDto of(Project project) {
-        return new ReadProjectListDto(project.getIdx(), project.getProjectName(), project.getSubject().getName(), 100);
+    public static ReadProjectListDto of(Project project, Double projectProgress) {
+        return new ReadProjectListDto(project.getIdx(), project.getProjectName(), project.getSubject().getName(), projectProgress);
     }
 }

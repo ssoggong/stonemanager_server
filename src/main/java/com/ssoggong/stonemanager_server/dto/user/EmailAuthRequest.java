@@ -1,16 +1,14 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadScheduleListResponse {
-    private List<ReadScheduleListDto> scheduleInfo;
+public class EmailAuthRequest {
+    private String email;
 }

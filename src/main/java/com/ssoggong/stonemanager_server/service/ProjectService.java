@@ -1,10 +1,10 @@
 package com.ssoggong.stonemanager_server.service;
 
 import com.ssoggong.stonemanager_server.dto.project.*;
+import com.ssoggong.stonemanager_server.dto.tag.TagDto;
+import com.ssoggong.stonemanager_server.dto.tag.TagResponse;
 import com.ssoggong.stonemanager_server.entity.*;
-import com.ssoggong.stonemanager_server.exception.NotFoundException;
-import com.ssoggong.stonemanager_server.exception.ProjectNotFoundException;
-import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
+import com.ssoggong.stonemanager_server.exception.*;
 import com.ssoggong.stonemanager_server.repository.ProjectRepository;
 import com.ssoggong.stonemanager_server.util.Constants;
 import com.ssoggong.stonemanager_server.util.ParticipateCalculator;
@@ -95,6 +95,7 @@ public class ProjectService {
         for(Task task: tasks){
             dtos.add(DdayDto.of(task));
         }
+        dtos = dtos.stream().filter(ddayDto -> ddayDto.getDday() <= 3).collect(Collectors.toList());
         return dtos;
     }
 
@@ -110,5 +111,32 @@ public class ProjectService {
             dtos.add(ProjectMemberDto.of(member.getUser()));
         }
         return new ProjectMemberResponse(dtos);
+    }
+
+    @Transactional
+    public void createProject(CreateProjectRequest request, Subject subject){
+        Project project = Project.builder()
+                .projectName(request.getProjectName())
+                .teamName(request.getProjectTeam())
+                .subject(subject)
+                .build();
+        saveProject(project);
+    }
+
+    @Transactional
+    public void updateProject(Long projectId, UpdateProjectRequest request){
+        Project project = findById(projectId);
+        project.setTeamName(request.getProjectTeam());
+        project.setProjectName(request.getProjectName());
+        saveProject(project);
+    }
+
+    public TagResponse readTaskTags(Long projectId){
+        Project project = findById(projectId);
+        List<TagDto> dtos = new ArrayList<>();
+        for(TaskTag tag : project.getTaskTagSet()){
+            dtos.add(TagDto.of(tag));
+        }
+        return new TagResponse(dtos);
     }
 }

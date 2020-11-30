@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadScheduleDetailResponse {
-    private ReadScheduleDetailDto data;
+public class CreateTaskResponse {
+    private Long taskIndex;
 }
