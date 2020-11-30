@@ -49,7 +49,7 @@ public class UserService {
         if(userSubjects.size() != 1) throw new MultipleNotFoundException();
         return userSubjects.get(0).getSubject();
     }
-    
+
     public Subject findSubjectByUserAndSubject(Long userId, Long subjectId){
         User user = findById(userId);
         System.out.println(user.getUserSubjectSet().size());
