@@ -143,7 +143,7 @@ public class TaskService {
 
     public Task findByProjectAndTask(Project project, Long taskId){
         if(project.getTaskSet().stream()
-                .filter(task -> task.getIdx() == taskId)
+                .filter(task -> task.getIdx().equals(taskId))
                 .collect(Collectors.toSet()).size() == 1){
             return findById(taskId);
         }

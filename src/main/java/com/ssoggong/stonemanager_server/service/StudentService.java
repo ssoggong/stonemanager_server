@@ -24,9 +24,7 @@ public class StudentService {
 
     public List<Subject> getSubjects(String studentId){
         Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new StudentNotFoundException(studentId));
-        List<SubjectStudent> subjectStudents = student.getSubjectStudentSet().stream()
-                .filter(subjectStudent -> subjectStudent.getStudent().getStudentId() == studentId)
-                .collect(Collectors.toList());
+        Set<SubjectStudent> subjectStudents = student.getSubjectStudentSet();
         List<Subject> subjects = new ArrayList<>();
         for(SubjectStudent subjectStudent : subjectStudents){
             subjects.add(subjectStudent.getSubject());

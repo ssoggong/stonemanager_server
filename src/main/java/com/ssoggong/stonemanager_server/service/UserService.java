@@ -8,6 +8,7 @@ import com.ssoggong.stonemanager_server.dto.user.*;
 import com.ssoggong.stonemanager_server.entity.*;
 import com.ssoggong.stonemanager_server.exception.*;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
+import com.ssoggong.stonemanager_server.repository.UserSubjectRepository;
 import com.ssoggong.stonemanager_server.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ProjectService projectService;
+    private final UserSubjectRepository userSubjectRepository;
 
     @Transactional
     public void saveUser(User user) { userRepository.save(user); }
@@ -100,12 +102,14 @@ public class UserService {
                 .email(request.getEmail())
                 .image(null)
                 .salt(null)
+                .userTaskSet(new HashSet<>())
+                .userSubjectSet(new HashSet<>())
+                .userScheduleSet(new HashSet<>())
                 .build();
-        Set<UserSubject> userSubjectSet = new HashSet<>();
         for(Subject subject : subjects){
-            userSubjectSet.add(UserSubject.builder().subject(subject).user(user).build());
+            UserSubject userSubject = UserSubject.builder().subject(subject).user(user).build();
+            userSubjectRepository.save(userSubject);
         }
-        user.setUserSubjectSet(userSubjectSet);
         saveUser(user);
         return new UserResponse(user.getIdx());
     }

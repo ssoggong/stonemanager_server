@@ -32,10 +32,10 @@ public class SubjectService {
     public List<FindStudentDto> findUser(Long subjectId, String keyword){
         Subject subject = findById(subjectId);
         List<UserSubject> userSubjects = subject.getUserSubjectSet().stream()
-                .filter(userSubject -> userSubject.getSubject().getIdx() == subjectId).collect(Collectors.toList());
+                .filter(userSubject -> userSubject.getSubject().getIdx().equals(subjectId)).collect(Collectors.toList());
         List<FindStudentDto> dtos = new ArrayList<>();
         for (UserSubject userSubject : userSubjects){
-            if(userSubject.getUser().getName() == keyword){
+            if(userSubject.getUser().getName().equals(keyword)){
                 dtos.add(FindStudentDto.of(userSubject.getUser()));
             }
         }
