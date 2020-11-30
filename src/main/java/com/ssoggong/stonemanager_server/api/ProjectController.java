@@ -94,5 +94,16 @@ public class ProjectController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @PostMapping("/{projectIndex}/members/{memberUserIndex}")
+    public ResponseEntity<Message> invitedMember(@PathVariable Long projectIndex,
+                                                 @PathVariable Long memberUserIndex){
+        User user = userService.findById(memberUserIndex);
+        Project project = projectService.findById(projectIndex);
+        projectUserService.createProjectUser(user, project);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_PROJECT_USER);
+        System.out.println("Invitation Success");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
 
