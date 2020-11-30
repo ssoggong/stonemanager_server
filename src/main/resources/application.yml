@@ -43,3 +43,23 @@ spring:
 #      ddl-auto: none
 #    properties:
 #      hibernate.enable_lazy_load_no_trans: true
+<<<<<<< HEAD
+
+spring:
+  datasource:
+    url: jdbc:mysql://database-local.cigdnmxkdvki.ap-northeast-2.rds.amazonaws.com:3306/ssoggong?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: sFo3Gx00NaMxs2LdaJwD
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      format_sql: true
+      ddl-auto: none
+    properties:
+      hibernate.enable_lazy_load_no_trans: true
+=======
+>>>>>>> 80de2695686dcb4cac3387b5eaf715adddc79ece

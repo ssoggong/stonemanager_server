@@ -37,10 +37,18 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<Message> readSchedule(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId, @RequestParam("year") int year, @RequestParam int month) {
+    public ResponseEntity<Message> readSchedule(@RequestHeader("userIndex") Long userId, @RequestHeader("projectIndex") Long projectId,
+                                                @RequestParam("year") int year,
+                                                @RequestParam(value = "month", required = false, defaultValue = "0")int month) {
         User user = userService.findById(userId);
         Project project = projectService.findById(projectId);
-        ReadScheduleListResponse response = scheduleService.readSchedule(projectId, year, month);
+        ReadScheduleListResponse response;
+        if(month != 0) {
+            response = scheduleService.readSchedule(projectId, year, month);
+        }
+        else {
+            response = scheduleService.readSchedule(projectId, year);
+        }
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_SCHEDULE_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

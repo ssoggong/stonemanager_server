@@ -10,4 +10,7 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query(value = "select * from schedule where year(date) = :year and month(date) = :month and project_idx = :projectId", nativeQuery = true)
     List<Schedule> readScheduleByYearAndMonth(@Param("year") int year, @Param("month") int month, @Param("projectId") Long projectIdx);
+
+    @Query(value = "select * from schedule where year(date) = :year and project_idx = :projectId", nativeQuery = true)
+    List<Schedule> readScheduleByYear(@Param("year") int year, @Param("projectId") Long projectIdx);
 }
