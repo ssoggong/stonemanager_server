@@ -23,6 +23,7 @@ public class StudentService {
     public void saveStudent(Student student) { studentRepository.save(student); }
 
     public List<Subject> getSubjects(String studentId){
+
         Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new StudentNotFoundException(studentId));
         Set<SubjectStudent> subjectStudents = student.getSubjectStudentSet();
         List<Subject> subjects = new ArrayList<>();
