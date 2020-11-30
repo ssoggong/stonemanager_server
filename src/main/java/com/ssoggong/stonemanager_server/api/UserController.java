@@ -5,6 +5,7 @@ import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.user.*;
 import com.ssoggong.stonemanager_server.service.AuthService;
+import com.ssoggong.stonemanager_server.service.StudentService;
 import com.ssoggong.stonemanager_server.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final AuthService authService;
+    private final StudentService studentService;
     @GetMapping
     public ResponseEntity<Message> readUserInfo(@RequestHeader("userIndex") Long userId){
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_USER_INFO, userService.readUserInfo(userId));
@@ -39,7 +41,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Message> registerUser(@RequestBody RegisterUserRequest request){
-        UserResponse response = userService.createUser(request);
+        UserResponse response = userService.createUser(request, studentService.getSubjects(request.getStudentId()));
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_USER, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
