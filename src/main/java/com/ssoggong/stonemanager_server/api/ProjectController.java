@@ -36,12 +36,12 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<Message> createProject(@RequestHeader("userIndex") Long userId,
                                                  @RequestBody CreateProjectRequest projectRequest) {
-        userService.findById(userId);
+        User user = userService.findById(userId);
         Subject subject = userService.findSubjectByUserAndSubject(userId, projectRequest.getSubjectId());
         for (Long memberId : projectRequest.getTeam()) {
             userService.findSubjectByUserAndSubject(memberId, projectRequest.getSubjectId());
         }
-        projectService.createProject(projectRequest, subject);
+        projectService.createProject(projectRequest, subject, user);
         userService.inviteMember(projectRequest.getTeam());
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_PROJECT);
         return new ResponseEntity<>(message, HttpStatus.OK);
