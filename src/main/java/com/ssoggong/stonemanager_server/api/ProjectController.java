@@ -38,10 +38,10 @@ public class ProjectController {
                                                  @RequestBody CreateProjectRequest projectRequest) {
         User user = userService.findById(userId);
         System.out.println("1");
-        Subject subject = userService.findSubjectByUserAndSubject(userId, projectRequest.getSubjectId());
+        Subject subject = userService.findSubjectByUserAndSubjectName(userId, projectRequest.getSubjectName());
         System.out.println("2");
         for (Long memberId : projectRequest.getTeam()) {
-            userService.findSubjectByUserAndSubject(memberId, projectRequest.getSubjectId());
+            userService.findSubjectByUserAndSubjectName(memberId, projectRequest.getSubjectName());
         }
         projectService.createProject(projectRequest, subject, user);
         userService.inviteMember(projectRequest.getTeam());

@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateProjectRequest {
-    private Long subjectId;
+    private String subjectName;
     private String projectTeam;
     private String projectName;
     private List<Long> team;
