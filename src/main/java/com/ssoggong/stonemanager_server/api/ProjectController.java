@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,7 +62,9 @@ public class ProjectController {
     public ResponseEntity<Message> readProjectDetail(@PathVariable Long projectIndex,
                                                      @RequestHeader("userIndex") Long userIndex) {
         ProjectDetailResponse response = projectService.getProjectDetail(projectIndex, userIndex);
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT, response);
+        List<ProjectDetailResponse> result = new ArrayList<>();
+        result.add(response);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
