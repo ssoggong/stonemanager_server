@@ -1,4 +1,4 @@
-package com.ssoggong.stonemanager_server.dto;
+package com.ssoggong.stonemanager_server.dto.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadScheduleTagResponse {
-    private List<ReadScheduleTagDto> tagInfo;
+public class UpdateProjectRequest {
+    private String projectTeam;
+    private String projectName;
+    private List<Long> team;
 }

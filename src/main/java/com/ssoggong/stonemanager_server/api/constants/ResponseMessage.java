@@ -10,6 +10,12 @@ public class ResponseMessage {
     public static final String UPDATE_PASSWORD = "비밀번호 변경 성공";
     public static final String READ_USER_INFO = "내 정보 조회 성공";
     public static final String READ_USER_SUBJECT = "수강 과목 조회 성공";
+    public static final String UPDATE_USER_IMAGE = "프로필사진 변경 성공";
+    public static final String SEND_AUTH_CODE = "인증 이메일 전송 성공";
+    public static final String CHECK_AUTH_CODE = "인증 번호 확인 성공";
+    public static final String FIND_PASSWORD = "새로운 비밀번호 메일 전송 성공";
+
+    public static final String READ_SUBJECT_STUDENT = "수강생 조회 성공";
 
     public static final String CREATE_PROJECT_USER = "팀원 초대 성공";
     public static final String READ_PROJECT_USER = "팀원 조회 성공";
@@ -53,6 +59,7 @@ public class ResponseMessage {
     public static final String CREATE_TASK_TAG = "할 일 태그 생성 성공";
     public static final String UPDATE_TASK_TAG = "할 일 태그 변경 성공";
     public static final String DELETE_TASK_TAG = "할 일 태그 삭제 성공";
+    public static final String READ_TASK_TAG_LIST = "할 일 태그 목록 조회 성공";
 
     // 실패
     public static final String NOT_FOUND_USER = "Invalid userIndex";
@@ -61,6 +68,7 @@ public class ResponseMessage {
     public static final String NOT_FOUND_TASK = "Invalid taskIndex";
     public static final String NOT_FOUNT_VALUE = "Not Found Value";
     public static final String UNAUTHORIZED_ACCESS = "Unauthorized Access";
+    public static final String WRONG_VALUE = "Wrong Value";
 
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 }
