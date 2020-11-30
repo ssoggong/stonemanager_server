@@ -4,6 +4,7 @@ import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
 import com.ssoggong.stonemanager_server.dto.file.AddFileRequest;
+import com.ssoggong.stonemanager_server.dto.file.FileResponse;
 import com.ssoggong.stonemanager_server.entity.Project;
 import com.ssoggong.stonemanager_server.entity.Task;
 import com.ssoggong.stonemanager_server.service.FileService;
@@ -47,6 +48,19 @@ public class FileController {
         taskService.findByProjectAndTask(project, taskId);
         fileService.deleteFile(fileIndex);
         Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_FILE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/{fileIndex}")
+    public ResponseEntity<Message> downloadFile(@RequestHeader("userIndex") Long userId,
+                                                @RequestHeader("projectIndex") Long projectId,
+                                                @RequestHeader("taskIndex") Long taskId,
+                                                @PathVariable Long fileIndex){
+        userService.findById(userId);
+        Project project = projectService.findByUserAndProject(userId, projectId);
+        taskService.findByProjectAndTask(project, taskId);
+        FileResponse response = fileService.readFile(fileIndex);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_FILE, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
