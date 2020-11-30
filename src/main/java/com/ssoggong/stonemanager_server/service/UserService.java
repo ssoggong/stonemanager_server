@@ -43,8 +43,10 @@ public class UserService {
         User user = findById(userId);
         System.out.println(user.getUserSubjectSet().size());
         List<UserSubject> userSubjects = user.getUserSubjectSet().stream()
-                .filter(userSubject -> userSubject.getSubject().getIdx() == subjectId)
+                .filter(userSubject -> userSubject.getSubject().getIdx().equals(subjectId))
                 .collect(Collectors.toList());
+        System.out.println(userSubjects.size());
+
         if(userSubjects.size() != 1) throw new MultipleNotFoundException();
         return userSubjects.get(0).getSubject();
     }

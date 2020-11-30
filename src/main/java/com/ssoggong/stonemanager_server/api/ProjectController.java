@@ -37,7 +37,9 @@ public class ProjectController {
     public ResponseEntity<Message> createProject(@RequestHeader("userIndex") Long userId,
                                                  @RequestBody CreateProjectRequest projectRequest) {
         User user = userService.findById(userId);
+        System.out.println("1");
         Subject subject = userService.findSubjectByUserAndSubject(userId, projectRequest.getSubjectId());
+        System.out.println("2");
         for (Long memberId : projectRequest.getTeam()) {
             userService.findSubjectByUserAndSubject(memberId, projectRequest.getSubjectId());
         }
