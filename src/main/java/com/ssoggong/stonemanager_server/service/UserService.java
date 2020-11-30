@@ -95,6 +95,7 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(RegisterUserRequest request, List<Subject> subjects){
+        if(userRepository.findByStudentId(request.getStudentId()).isPresent()) throw new NotFoundException("Already Exist..");
         User user = User.builder()
                 .name(request.getUserName())
                 .studentId(request.getStudentId())
