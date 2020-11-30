@@ -150,4 +150,16 @@ public class UserService {
         String num = String.valueOf((int)(Math.random()*10000));
         return str+num;
     }
+
+    public void inviteMember(List<Long> members){
+        for(Long userId: members){
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(findById(userId).getEmail());
+            message.setFrom(Constants.FROM_ADDRESS);
+            message.setSubject(Constants.MAIL_INVITE_TITLE);
+            // TODO 링크 뭐주지..? 화이트 라벨 화면 나올텐데..
+            message.setText(Constants.MAIL_INVITE_CONTENT);
+            mailSender.send(message);
+        }
+    }
 }

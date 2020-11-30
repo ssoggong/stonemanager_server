@@ -33,7 +33,6 @@ public class ProjectController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    // TODO 이메일 전송
     @PostMapping
     public ResponseEntity<Message> createProject(@RequestHeader("userIndex") Long userId,
                                                  @RequestBody CreateProjectRequest projectRequest) {
@@ -43,6 +42,7 @@ public class ProjectController {
             userService.findSubjectByUserAndSubject(memberId, projectRequest.getSubjectId());
         }
         projectService.createProject(projectRequest, subject);
+        userService.inviteMember(projectRequest.getTeam());
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_PROJECT);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -82,7 +82,6 @@ public class ProjectController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    // TODO 이메일 전송
     @PutMapping("{projectIndex}")
     public ResponseEntity<Message> updateProject(@PathVariable Long projectIndex,
                                                  @RequestHeader("userIndex") Long userIndex,
@@ -90,6 +89,7 @@ public class ProjectController {
         userService.findById(userIndex);
         projectService.findByUserAndProject(userIndex, projectIndex);
         projectService.updateProject(projectIndex, request);
+        userService.inviteMember(request.getTeam());
         Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_PROJECT);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
