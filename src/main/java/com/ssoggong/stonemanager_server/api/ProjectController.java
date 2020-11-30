@@ -62,11 +62,7 @@ public class ProjectController {
     public ResponseEntity<Message> readProjectDetail(@PathVariable Long projectIndex,
                                                      @RequestHeader("userIndex") Long userIndex) {
         ProjectDetailResponse response = projectService.getProjectDetail(projectIndex, userIndex);
-        List<ProjectDetailResponse> responseList = new ArrayList<>();
-        responseList.add(response);
-        ProjectDetailResult result = new ProjectDetailResult(responseList);
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT, result);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_PROJECT, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
