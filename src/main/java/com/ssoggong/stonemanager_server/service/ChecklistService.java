@@ -1,5 +1,6 @@
 package com.ssoggong.stonemanager_server.service;
 
+import com.ssoggong.stonemanager_server.dto.checklist.ChecklistDto;
 import com.ssoggong.stonemanager_server.dto.checklist.ChecklistRequest;
 import com.ssoggong.stonemanager_server.dto.checklist.ChecklistResponse;
 import com.ssoggong.stonemanager_server.entity.*;
@@ -14,6 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,5 +56,16 @@ public class ChecklistService {
     @Transactional
     public void deleteChecklist(Checklist checklist) {
         checklistRepository.delete(checklist);
+    }
+
+    public List<ChecklistDto> readChecklist(Task task) {
+        Set<Checklist> checklistSet = task.getChecklistSet();
+
+        List<ChecklistDto> checklistDtoList = new ArrayList<>();
+        for(Checklist checklist: checklistSet) {
+            checklistDtoList.add(ChecklistDto.of(checklist));
+        }
+
+        return checklistDtoList;
     }
 }

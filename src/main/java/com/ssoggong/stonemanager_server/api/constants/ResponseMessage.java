@@ -47,6 +47,7 @@ public class ResponseMessage {
     public static final String CREATE_CHECKLIST  = "체크리스트 생성 성공";
     public static final String UPDATE_CHECKLIST = "체크리스트 변경 성공";
     public static final String DELETE_CHECKLIST = "체크리스트 삭제 성공";
+    public static final String READ_CHECKLIST = "체크리스트 조회 성공";
 
     public static final String CREATE_COMMENT = "코멘트 생성 성공";
     public static final String DELETE_COMMENT = "코멘트 삭제 성공";

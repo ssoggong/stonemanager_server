@@ -3,6 +3,7 @@ package com.ssoggong.stonemanager_server.api;
 import com.ssoggong.stonemanager_server.api.constants.Message;
 import com.ssoggong.stonemanager_server.api.constants.ResponseMessage;
 import com.ssoggong.stonemanager_server.api.constants.StatusCode;
+import com.ssoggong.stonemanager_server.dto.checklist.ChecklistDto;
 import com.ssoggong.stonemanager_server.dto.checklist.ChecklistRequest;
 import com.ssoggong.stonemanager_server.dto.checklist.ChecklistResponse;
 import com.ssoggong.stonemanager_server.dto.comment.CommentRequest;
@@ -15,6 +16,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -64,6 +67,18 @@ public class ChecklistController {
         Checklist checklist = checklistService.findById(checklistId);
         checklistService.deleteChecklist(checklist);
         Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_CHECKLIST);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Message> readChecklist(@RequestHeader("userIndex") Long userId,
+                                                 @RequestHeader("projectIndex") Long projectId,
+                                                 @RequestHeader("taskIndex") Long taskId) {
+        User user = userService.findById(userId);
+        Project project = projectService.findById(projectId);
+        Task task = taskService.findById(taskId);
+        List<ChecklistDto> response = checklistService.readChecklist(task);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CHECKLIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
