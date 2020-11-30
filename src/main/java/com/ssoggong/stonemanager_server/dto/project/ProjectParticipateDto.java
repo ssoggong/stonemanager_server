@@ -12,10 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectParticipateDto {
+    private Long memberIndex;
     private String memberName;
     private Double participateRate;
 
     public static ProjectParticipateDto of(ProjectUser projectUser, Double memberParticipateRate){
-        return new ProjectParticipateDto(projectUser.getUser().getName(), memberParticipateRate);
+        return new ProjectParticipateDto(projectUser.getUser().getIdx(), projectUser.getUser().getName(), memberParticipateRate);
     }
 }
