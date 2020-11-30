@@ -5,14 +5,8 @@ import com.ssoggong.stonemanager_server.dto.project.ReadProjectListResponse;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawDto;
 import com.ssoggong.stonemanager_server.dto.project.ProjectWithdrawResponse;
 import com.ssoggong.stonemanager_server.dto.user.*;
-import com.ssoggong.stonemanager_server.entity.Project;
-import com.ssoggong.stonemanager_server.entity.ProjectUser;
-import com.ssoggong.stonemanager_server.entity.Subject;
-import com.ssoggong.stonemanager_server.entity.User;
-import com.ssoggong.stonemanager_server.entity.UserSubject;
-import com.ssoggong.stonemanager_server.exception.MultipleNotFoundException;
-import com.ssoggong.stonemanager_server.exception.UserNotFoundException;
-import com.ssoggong.stonemanager_server.exception.WrongPasswordException;
+import com.ssoggong.stonemanager_server.entity.*;
+import com.ssoggong.stonemanager_server.exception.*;
 import com.ssoggong.stonemanager_server.repository.UserRepository;
 import com.ssoggong.stonemanager_server.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -124,5 +118,35 @@ public class UserService {
         if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
         user.setPw(request.getNewPassword());
         saveUser(user);
+    }
+
+    @Transactional
+    public void findPassword(FindPasswordRequest request, Long userId){
+        User user = findById(userId);
+        if(user.getName() != request.getUserName()) throw new WrongUsernameException(request.getUserName());
+        if(user.getStudentId() != request.getUserStudentId()) throw new WrongStudentIdException(request.getUserStudentId());
+        if(user.getEmail() != request.getUserEmail()) throw new WrongUseremailException(request.getUserEmail());
+        String newPassword = createNewPassword();
+        user.setPw(newPassword);
+        saveUser(user);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setFrom(Constants.FROM_ADDRESS);
+        message.setSubject(Constants.MAIL_PW_TITLE);
+        message.setText(Constants.MAIL_PW_CONTENT + newPassword);
+        mailSender.send(message);
+    }
+
+    public String createNewPassword(){
+        int min = 0;
+        int max = 25;
+        char random;
+        String str = "";
+        for(int i=0; i<6; i++){
+            random = (char) ((Math.random() * (max - min)) + min + 97);
+            str += random;
+        }
+        String num = String.valueOf((int)(Math.random()*10000));
+        return str+num;
     }
 }

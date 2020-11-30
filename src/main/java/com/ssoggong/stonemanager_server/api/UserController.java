@@ -72,4 +72,12 @@ public class UserController {
         Message message = new Message(StatusCode.OK, ResponseMessage.CHECK_AUTH_CODE);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @PutMapping("/password/find")
+    public ResponseEntity<Message> findPassword(@RequestHeader("userIndex") Long userId,
+                                                @RequestBody FindPasswordRequest request){
+        userService.findPassword(request, userId);
+        Message message = new Message(StatusCode.OK, ResponseMessage.FIND_PASSWORD);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
