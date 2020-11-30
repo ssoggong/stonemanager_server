@@ -81,6 +81,17 @@ public class ScheduleService {
         return new ReadScheduleListResponse(dto);
     }
 
+    public ReadScheduleListResponse readSchedule(Long projectId, int year) {
+        List<Schedule> scheduleList = scheduleRepository.readScheduleByYear(year, projectId);
+
+        List<ReadScheduleListDto> dto = new ArrayList<>();
+        for(Schedule schedule: scheduleList) {
+            dto.add(ReadScheduleListDto.of(schedule));
+        }
+
+        return new ReadScheduleListResponse(dto);
+    }
+
     @Transactional
     public void deleteSchedule(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);
