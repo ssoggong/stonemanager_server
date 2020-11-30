@@ -125,7 +125,7 @@ public class UserService {
     @Transactional
     public void updatePassword(UpdatePasswordRequest request, Long userId){
         User user = findById(userId);
-        if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
+        if(!user.getPw().equals(request.getPassword())) throw new WrongPasswordException(request.getPassword());
         user.setPw(request.getNewPassword());
         saveUser(user);
     }
