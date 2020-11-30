@@ -92,7 +92,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse createUser(RegisterUserRequest request){
+    public UserResponse createUser(RegisterUserRequest request, List<Subject> subjects){
         User user = User.builder()
                 .name(request.getUserName())
                 .studentId(request.getStudentId())
@@ -102,6 +102,11 @@ public class UserService {
                 .salt(null)
                 .build();
         saveUser(user);
+        Set<UserSubject> userSubjectSet = new HashSet<>();
+        for(Subject subject : subjects){
+            userSubjectSet.add(UserSubject.builder().subject(subject).user(user).build());
+        }
+        user.setUserSubjectSet(userSubjectSet);
         return new UserResponse(user.getIdx());
     }
 
