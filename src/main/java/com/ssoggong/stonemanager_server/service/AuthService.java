@@ -26,6 +26,7 @@ public class AuthService {
     @Transactional
     public void saveAuth(Auth auth){ authRepository.save(auth); }
 
+    @Transactional
     public void sendAuthcode(EmailAuthRequest request){
         SimpleMailMessage message = new SimpleMailMessage();
         String code = createRandomCode();
@@ -39,14 +40,14 @@ public class AuthService {
     }
 
     public String createRandomCode(){
-        int random = (int)(Math.random()*10000);
-        return String.valueOf(random);
+        String random = String.valueOf(Math.random()*10000).substring(0,4);
+        return random;
     }
 
     @Transactional
     public void checkAuthcode(AuthRequest request){
         Auth auth = authRepository.findByEmail(request.getEmail()).orElseThrow(MultipleNotFoundException::new);
-        if(auth.getCode() != request.getCode()) throw new WrongAuthcodeException(request.getCode());
+        if(!auth.getCode().equals(request.getCode())) throw new WrongAuthcodeException(request.getCode());
         authRepository.delete(auth);
     }
 }

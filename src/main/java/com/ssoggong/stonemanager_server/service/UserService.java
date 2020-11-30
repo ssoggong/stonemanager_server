@@ -101,19 +101,19 @@ public class UserService {
                 .image(null)
                 .salt(null)
                 .build();
-        saveUser(user);
         Set<UserSubject> userSubjectSet = new HashSet<>();
         for(Subject subject : subjects){
             userSubjectSet.add(UserSubject.builder().subject(subject).user(user).build());
         }
         user.setUserSubjectSet(userSubjectSet);
+        saveUser(user);
         return new UserResponse(user.getIdx());
     }
 
     @Transactional
     public UserResponse userLogin(LoginRequest request){
         User user = userRepository.findByStudentId(request.getUserId()).orElseThrow(() -> new UserNotFoundException(-1L));
-        if(user.getPw() != request.getPassword()) throw new WrongPasswordException(request.getPassword());
+        if(!user.getPw().equals(request.getPassword())) throw new WrongPasswordException(request.getPassword());
         return new UserResponse(user.getIdx());
     }
 
