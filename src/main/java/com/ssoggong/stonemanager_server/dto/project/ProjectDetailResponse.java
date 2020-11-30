@@ -16,4 +16,5 @@ public class ProjectDetailResponse {
     private Double projectProgress;
     private List<ProjectParticipateDto> projectParticipateInfo;
     private List<DdayDto> DDayInfo;
+
 }
