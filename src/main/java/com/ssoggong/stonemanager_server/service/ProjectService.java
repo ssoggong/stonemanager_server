@@ -81,7 +81,7 @@ public class ProjectService {
                     .filter(task -> task.getUserTaskSet().contains(new UserTask(user.getUser(), task)))
                     .collect(Collectors.toSet()).size();
             dtos.add(ProjectParticipateDto.of(user,
-                    new ParticipateCalculator(totalDoneTask, memberDoneTask).getParticipateRate()));
+                    new ParticipateCalculator(totalDoneTask, memberDoneTask, members.size()).getParticipateRate()));
         }
         return dtos;
     }
