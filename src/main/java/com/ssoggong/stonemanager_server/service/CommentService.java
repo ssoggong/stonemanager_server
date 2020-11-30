@@ -1,5 +1,7 @@
 package com.ssoggong.stonemanager_server.service;
 
+import com.ssoggong.stonemanager_server.dto.comment.CommentDto;
+import com.ssoggong.stonemanager_server.dto.comment.CommentResponse;
 import com.ssoggong.stonemanager_server.entity.Comment;
 import com.ssoggong.stonemanager_server.entity.Task;
 import com.ssoggong.stonemanager_server.entity.User;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,5 +54,13 @@ public class CommentService {
         if(!comment.getUser().getIdx().equals(userId)) throw new UnauthorizedUserException(userId);
         commentRepository.deleteById(commentId);
     }
+
+   public CommentResponse readComments(Task task){
+       List<CommentDto> dtos = new ArrayList<>();
+       for(Comment comment: task.getCommentSet()){
+            dtos.add(CommentDto.of(comment, comment.getUser()));
+       }
+       return new CommentResponse(dtos);
+   }
 
 }

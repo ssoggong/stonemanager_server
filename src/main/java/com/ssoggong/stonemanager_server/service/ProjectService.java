@@ -111,7 +111,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void createProject(CreateProjectRequest request, Subject subject){
+    public void createProject(CreateProjectRequest request, Subject subject, User user){
         Project project = Project.builder()
                 .projectName(request.getProjectName())
                 .teamName(request.getProjectTeam())
@@ -122,6 +122,7 @@ public class ProjectService {
                 .taskSet(new HashSet<>())
                 .taskTagSet(new HashSet<>())
                 .build();
+        ProjectUser.builder().user(user).project(project).build();
         saveProject(project);
     }
 

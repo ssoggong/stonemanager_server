@@ -52,6 +52,7 @@ public class ResponseMessage {
     public static final String CREATE_COMMENT = "코멘트 생성 성공";
     public static final String DELETE_COMMENT = "코멘트 삭제 성공";
     public static final String UPDATE_COMMENT = "코멘트 변경 성공";
+    public static final String READ_COMMENT = "코멘트 목록 조회 성공";
 
     public static final String CREATE_FILE = "파일 생성 성공";
     public static final String UPDATE_FILE = "파일 변경 성공";
